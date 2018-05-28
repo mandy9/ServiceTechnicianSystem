@@ -2,31 +2,29 @@
 	xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form"
 	controllerName="zss18_t2_app.technician_main" xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:t="sap.ui.table">
-
 	<Page title="Technician View">
 		<content>
-			<IconTabBar id="centralTabBar" expanded="{device>/isNoPhone}"
-				class="sapUiResponsiveContentPadding">
-				<items>
-					<IconTabFilter text="Search Service Tickets">
-						<l:Grid defaultSpan="L6 M6 S6" width="auto" id="gridIdFilter">
-							<l:content>
-								<f:SimpleForm id="FilterForm" minWidth="1024"
-									maxContainerCols="2" editable="true" layout="ResponsiveGridLayout"
-									labelSpanL="3" labelSpanM="3" emptySpanL="2" emptySpanM="2"
-									columnsL="1" columnsM="1" class="editableForm">
-									<f:content>
-										<SearchField search="onSearch"
-											placeholder="Reporter Name, Priority, Status" />
-										<Button text="Advanced Search" type="Accept" press="onAdvancedFilter"
-											id="filterAdvanced" />
-									</f:content>
-								</f:SimpleForm>
-							</l:content>
-						</l:Grid>
-					</IconTabFilter>
-				</items>
-			</IconTabBar>
+			<Toolbar>
+				<Title id="title" text=""></Title>
+
+				<ToolbarSpacer />
+
+				<ToggleButton icon="sap-icon://complete"
+					tooltip="Show only tickets with COMPLETE status" press="toggleStatusCompleteFilter"
+					pressed="{ui>/completeFilterOn}" />
+				<ToggleButton icon="sap-icon://task" tooltip="Show only tickets with DONE status"
+					press="toggleStatusDoneFilter" pressed="{ui>/doneFilterOn}" />
+				<ToggleButton icon="sap-icon://wrench"
+					tooltip="Show only tickets with IN PROGRESS status" press="toggleInProgressFilter"
+					pressed="{ui>/inprogressFilterOn}" />
+				<ToggleButton icon="sap-icon://lightbulb" tooltip="Show only tickets with NEW status"
+					press="toggleNewFilter" pressed="{ui>/newFilterOn}" />
+				<Button icon="sap-icon://decline" tooltip="Clear all filters"
+					press="clearAllFilters" />
+				<ToolbarSeparator />
+				<SearchField placeholder="Filter" value="{ui>/globalFilter}"
+					search="filterGlobally" width="15rem" />
+			</Toolbar>
 
 			<Table id="service_tickets_technician_id" items="{/TicketSet}"
 				growing="true" mode="SingleSelectLeft" growingScrollToLoad="true">
@@ -85,9 +83,15 @@
 					</ColumnListItem>
 				</items>
 			</Table>
+			<Toolbar>
+			
 			<Button text="Read" type="Accept" press="onReadTicketTech" id="idReadTicket" />
 			<Button text="Update" type="Accept" press="onUpdateTicketTech"
 				id="idUpdateTicketTech" />
+				<ToolbarSpacer />
+			<Button icon="sap-icon://hint" tooltip="Show information"
+				press="showInfo" />
+				</Toolbar>
 			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdTicketTechRead">
 				<l:content>
 
