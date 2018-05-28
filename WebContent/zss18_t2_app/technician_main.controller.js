@@ -1,7 +1,9 @@
 /* global moment:true */
 sap.ui.define([
     'sap/ui/core/mvc/Controller',
-    'sap/ui/model/json/JSONModel',
+    'sap/ui/model/json/JSONModel'
+    //"sap/ui/model/Filter",
+	//"sap/ui/model/FilterOperator"
    // '//WebContent/libs/moment',
 ], function (Controller, JSONModel, momentjs) {
     "use strict";
@@ -14,15 +16,39 @@ return Controller.extend("zss18_t2_app.technician_main", {
 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 * @memberOf t2_service_technician_system_app.technician_main
 */
+	
+	
 	onInit : function() {
 		var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
 		var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
-		this.getView().setModel(oModel);
+		var view = this.getView().setModel(oModel);
 		var oGridTicketDetails = this.getView().byId("gridIdTicketTechRead");
 		var oGridTicketUpdate = this.getView().byId("gridIdTicketTechUpdate");
 		oGridTicketDetails.setVisible(false);
 		oGridTicketUpdate.setVisible(false);
 		
+		var _oGlobalFilter = null;
+		var _oStatusFilter = null;
+	},
+	
+	filterGlobally : function(oEvent) {
+		
+		var sQuery = oEvent.getParameter("query");
+		var _oGlobalFilter = null;
+
+		if (sQuery) {
+			_oGlobalFilter = new sap.ui.model.Filter([
+				new sap.ui.model.Filter("Id", sap.ui.model.FilterOperator.EQ, sQuery)
+			], true);
+		}
+
+		var oFilter = null;
+
+		if (_oGlobalFilter) {
+			oFilter = _oGlobalFilter;
+		}
+
+		this.byId("service_tickets_technician_id").getBinding("items").filter(oFilter, "Application");
 	},
 	
 	onReadTicketTech : function() {

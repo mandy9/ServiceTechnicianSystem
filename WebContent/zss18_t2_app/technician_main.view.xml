@@ -22,46 +22,46 @@
 				<Button icon="sap-icon://decline" tooltip="Clear all filters"
 					press="clearAllFilters" />
 				<ToolbarSeparator />
-				<SearchField placeholder="Filter" value="{ui>/globalFilter}"
+				<SearchField placeholder="Search globally" value="{ui>/globalFilter}"
 					search="filterGlobally" width="15rem" />
 			</Toolbar>
 
 			<Table id="service_tickets_technician_id" items="{/TicketSet}"
-				growing="true" mode="SingleSelectLeft" growingScrollToLoad="true" filter="filterMain">
+				growing="true" mode="SingleSelectLeft" growingScrollToLoad="true" filter="filterGlobally">
 
 
 				<columns>
-					<Column filterProperty="TicketId">
+					<Column filterProperty="Id" defaultFilterOperator="EQ">
 						<Text text="Ticket ID" />
 					</Column>
-					<Column filterProperty="PersonName">
+					<Column filterProperty="PersonName" filterType="sap.ui.model.type.String" defaultFilterOperator="StartsWith">
 						<Text text="Reporter Name" />
 					</Column>
-					<Column filterProperty="Issue">
+					<Column filterProperty="Issue" >
 						<Text text="Issue" />
 					</Column>
-					<Column filterProperty="MachineId">
+					<Column filterProperty="MachineId" >
 						<Text text="Machine ID" />
 					</Column>
-					<Column filterProperty="Priority">
+					<Column filterProperty="Priority" >
 						<Text text="Priority" />
 					</Column>
-					<Column filterProperty="ReportedOn">
+					<Column filterProperty="ReportedOn" >
 						<Text text="Reported On" />
 					</Column>
-					<Column filterProperty="ExpectedCompletionTime">
+					<Column filterProperty="ExpctedCompltDt" >
 						<Text text="Expected Completion Time" />
 					</Column>
-					<Column filterProperty="Status">
+					<Column filterProperty="Status" >
 						<Text text="Status" />
 					</Column>
-					<Column filterProperty="AssignedTo">
+					<Column filterProperty="AssignedTo" >
 						<Text text="Assigned To" />
 					</Column>
-					<Column filterProperty="AssignedBy">
+					<Column filterProperty="AssignedBy" >
 						<Text text="Assigned By" />
 					</Column>
-					<Column filterProperty="TechnicianNote">
+					<Column filterProperty="TechnicianNote" >
 						<Text text="Technician Note" />
 					</Column>
 				</columns>
