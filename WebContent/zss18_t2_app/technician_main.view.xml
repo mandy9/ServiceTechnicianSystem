@@ -22,46 +22,46 @@
 				<Button icon="sap-icon://decline" tooltip="Clear all filters"
 					press="clearAllFilters" />
 				<ToolbarSeparator />
-				<SearchField placeholder="Filter" value="{ui>/globalFilter}"
+				<SearchField placeholder="Search globally" value="{ui>/globalFilter}"
 					search="filterGlobally" width="15rem" />
 			</Toolbar>
 
 			<Table id="service_tickets_technician_id" items="{/TicketSet}"
-				growing="true" mode="SingleSelectLeft" growingScrollToLoad="true">
+				growing="true" mode="SingleSelectLeft" growingScrollToLoad="true" filter="filterGlobally">
 
 
 				<columns>
-					<Column>
+					<Column filterProperty="Id" defaultFilterOperator="EQ">
 						<Text text="Ticket ID" />
 					</Column>
-					<Column>
+					<Column filterProperty="PersonName" filterType="sap.ui.model.type.String" defaultFilterOperator="StartsWith">
 						<Text text="Reporter Name" />
 					</Column>
-					<Column>
+					<Column filterProperty="Issue" >
 						<Text text="Issue" />
 					</Column>
-					<Column>
+					<Column filterProperty="MachineId" >
 						<Text text="Machine ID" />
 					</Column>
-					<Column>
+					<Column filterProperty="Priority" >
 						<Text text="Priority" />
 					</Column>
-					<Column>
+					<Column filterProperty="ReportedOn" >
 						<Text text="Reported On" />
 					</Column>
-					<Column>
+					<Column filterProperty="ExpctedCompltDt" >
 						<Text text="Expected Completion Time" />
 					</Column>
-					<Column>
+					<Column filterProperty="Status" >
 						<Text text="Status" />
 					</Column>
-					<Column>
+					<Column filterProperty="AssignedTo" >
 						<Text text="Assigned To" />
 					</Column>
-					<Column>
+					<Column filterProperty="AssignedBy" >
 						<Text text="Assigned By" />
 					</Column>
-					<Column>
+					<Column filterProperty="TechnicianNote" >
 						<Text text="Technician Note" />
 					</Column>
 				</columns>
@@ -89,8 +89,9 @@
 			<Button text="Update" type="Accept" press="onUpdateTicketTech"
 				id="idUpdateTicketTech" />
 				<ToolbarSpacer />
-			<Button icon="sap-icon://hint" tooltip="Show information"
-				press="showInfo" />
+			<ToggleButton icon="sap-icon://message-information" tooltip="Filter field in the Toolbar:The filter field triggers a binding based filtering on all columns.
+Clear all filters:All filters can be cleared via the button with the cross icon in the toolbar."
+			 />
 				</Toolbar>
 			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdTicketTechRead">
 				<l:content>

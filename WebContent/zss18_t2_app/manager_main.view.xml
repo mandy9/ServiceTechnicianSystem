@@ -1,0 +1,285 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form"
+	controllerName="zss18_t2_app.manager_main" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:t="sap.ui.table">
+	<Page title="Manager View">
+		<content>
+			<Toolbar>
+				<Title id="title" text=""></Title>
+
+				<ToolbarSpacer />
+
+				<ToggleButton icon="sap-icon://complete"
+					tooltip="Show only tickets with COMPLETE status" press="toggleStatusCompleteFilter"
+					pressed="{ui>/completeFilterOn}" />
+				<ToggleButton icon="sap-icon://task" tooltip="Show only tickets with DONE status"
+					press="toggleStatusDoneFilter" pressed="{ui>/doneFilterOn}" />
+				<ToggleButton icon="sap-icon://wrench"
+					tooltip="Show only tickets with IN PROGRESS status" press="toggleInProgressFilter"
+					pressed="{ui>/inprogressFilterOn}" />
+				<ToggleButton icon="sap-icon://lightbulb" tooltip="Show only tickets with NEW status"
+					press="toggleNewFilter" pressed="{ui>/newFilterOn}" />
+				<Button icon="sap-icon://decline" tooltip="Clear all filters"
+					press="clearAllFilters" />
+				<ToolbarSeparator />
+				<SearchField placeholder="Filter" value="{ui>/globalFilter}"
+					search="filterGlobally" width="15rem" />
+			</Toolbar>
+
+			<Table id="service_tickets_manager_id" items="{/TicketSet}"
+				growing="true" mode="SingleSelectLeft" growingScrollToLoad="true">
+
+
+				<columns>
+					<Column>
+						<Text text="Ticket ID" />
+					</Column>
+					<Column>
+						<Text text="Reporter Name" />
+					</Column>
+					<Column>
+						<Text text="Issue" />
+					</Column>
+					<Column>
+						<Text text="Machine ID" />
+					</Column>
+					<Column>
+						<Text text="Priority" />
+					</Column>
+					<Column>
+						<Text text="Reported On" />
+					</Column>
+					<Column>
+						<Text text="Expected Completion Time" />
+					</Column>
+					<Column>
+						<Text text="Status" />
+					</Column>
+					<Column>
+						<Text text="Assigned To" />
+					</Column>
+					<Column>
+						<Text text="Assigned By" />
+					</Column>
+					<Column> 
+						<Text text="Technician Note" />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{Id}" />
+							<Text text="{PersonName}" />
+							<Text text="{Issue}" />
+							<Text text="{MachineId}" />
+							<Text text="{Priority}" />
+							<Text text="{ReportedOn}" />
+							<Text text="{ExpctedCompltDt}" />
+							<Text text="{Status}" />
+							<Text text="{AssignedTo}" />
+							<Text text="{AssignedBy}" />
+							<Text text="{TechnicianNote}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<Toolbar>
+
+			<Button text="Create" type="Accept" press="onCreateTicketManag" id="idCreateTicketManag" />			
+			<Button text="Read" type="Accept" press="onReadTicketManag" id="idReadTicket" />
+			<Button text="Update" type="Accept" press="onUpdateTicketManag" id="idUpdateTicketManag" />
+			<Button text="Change Status" type="Accept" press="onChangeTicketManag" id="idChangeTicketManag" />
+			<Button text="Delete" type="Accept" press="onDeleteTicketManag" id="idDeleteTicketManag" />
+			
+			<ToolbarSpacer />
+			<Button icon="sap-icon://hint" tooltip="Show information" press="showInfo" />
+			</Toolbar>
+
+			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdTicketManagCreate">
+				<l:content>
+					<f:SimpleForm id="CreateDetailsForm" minWidth="1024"
+						maxContainerCols="2" editable="true" layout="ResponsiveGridLayout"
+						title="Create Service Ticket" labelSpanL="3" labelSpanM="3"
+						emptySpanL="4" emptySpanM="4" columnsL="1" columnsM="1" class="editableForm">
+						<f:content>
+							<Label text="Ticket ID" />
+							<Input id="ticketCreateId" type="Number" maxLength="5" />
+							<Label text="Reporter Name" />
+							<Input id="personNameCreateId" maxLength="40" />
+							<Label text="Issue" />
+							<Input id="issueCreateId" />
+							<Label text="Machine ID" />
+							<Input value="{MachineId}" id="machineCreateId" maxLength="3" />
+							<Label text="Priority" />
+							<Select id="priorityCreateId">
+								<items>
+									<core:Item text="0" key="0" />
+									<core:Item text="1" key="1" />
+									<core:Item text="2" key="2" />
+								</items>
+							</Select>
+
+							<Label text="Assigned To" />
+							<Input id="assignedToCreateId" maxLength="12" />
+							
+							<Label text="" />
+							<Button text="Save" type="Accept" press="onSaveManagerCreate" id="saveBtnManagCreate" />
+							<Button text="Close" type="Accept" press="onCloseManagerCreate" id="closeBtnManagCreate" />
+						</f:content>
+					</f:SimpleForm>
+				</l:content>
+			</l:Grid>
+
+
+			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdTicketManagRead">
+				<l:content>
+					<f:SimpleForm id="ReadDetailsForm" minWidth="1024"
+						maxContainerCols="2" editable="true" layout="ResponsiveGridLayout"
+						title="Service Ticket Details" labelSpanL="3" labelSpanM="3"
+						emptySpanL="4" emptySpanM="4" columnsL="1" columnsM="1" class="editableForm">
+						<f:content>
+							<Label text="Ticket ID" />
+							<Input value="{Id}" id="ticketId" type="Number" maxLength="5" />
+							<Label text="Reporter Name" />
+							<Input value="{PersonName}" id="personNameId" maxLength="40" />
+							<Label text="Issue" />
+							<Input value="{Issue}" id="issueId" />
+							<Label text="Machine ID" />
+							<Input value="{MachineId}" id="machineId" maxLength="3" />
+							<Label text="Priority" />
+							<Input value="{Priority}" id="priorityId" maxLength="1" />
+							<Label text="Reported On" />
+							<Input value="{ReportedOn}" id="reportedOnId" maxLength="20" />
+							<Label text="Expected Completion Time" />
+							<Input value="{ExpctedCompltDt}" id="expctedCompltDtId" maxLength="20" />
+							<Label text="Status" />
+							<Input value="{Status}" id="statusId" maxLength="1" />
+							<Label text="Assigned To" />
+							<Input value="{AssignedTo}" id="assignedToId" maxLength="12" />
+							<Label text="Assigned By" />
+							<Input value="{AssignedBy}" id="assignedById" maxLength="12" />
+							<Label text="Technician Note" />
+							<Input value="{TechnicianNote}" id="technicianNoteId" />
+
+							<Label text="" />
+							<Button text="Close" type="Accept" press="onCloseManagerRead" id="closeBtnManagRead" />
+						</f:content>
+					</f:SimpleForm>
+				</l:content>
+			</l:Grid>
+
+			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdTicketManagUpdate">
+				<l:content>
+					<f:SimpleForm id="UpdateDetailsForm" minWidth="1024"
+						maxContainerCols="2" editable="true" layout="ResponsiveGridLayout"
+						title="Update Service Ticket" labelSpanL="3" labelSpanM="3"
+						emptySpanL="4" emptySpanM="4" columnsL="1" columnsM="1" class="editableForm">
+						<f:content>
+							<Label text="Ticket ID" />
+							<Input value="{Id}" id="ticketUpdateId" type="Number" maxLength="5" />
+							<Label text="Reporter Name" />
+							<Input value="{PersonName}" id="personNameUpdateId" maxLength="40" />
+							<Label text="Issue" />
+							<Input value="{Issue}" id="issueUpdateId" />
+							<Label text="Machine ID" />
+							<Input value="{MachineId}" id="machineUpdateId" maxLength="3" />
+							<Label text="Priority" />
+							<Select id="priorityUpdateId" selectedKey="{Priority}">
+								<items>
+									<core:Item text="0" key="0" />
+									<core:Item text="1" key="1" />
+									<core:Item text="2" key="2" />
+								</items>
+							</Select>
+
+							<Label text="Reported On" />
+							<Input value="{ReportedOn}" id="reportedOnUpdateId" maxLength="20" />
+							<Label text="Expected Completion Time" />
+							<Input value="{ExpctedCompltDt}" id="expctedCompltDtUpdateId" maxLength="20" placeholder="DD/MM/YYYY" />
+							<Label text="Status" />
+							<Select id="statusUpdateId" selectedKey="{Status}">
+								<items>
+									<core:Item text="0" key="0" />
+									<core:Item text="1" key="1" />
+									<core:Item text="2" key="2" />
+									<core:Item text="3" key="3" />
+								</items>
+							</Select>
+
+							<Label text="Assigned To" />
+							<Input value="{AssignedTo}" id="assignedToUpdateId" maxLength="12" />
+							<Label text="Assigned By" />
+							<Input value="{AssignedBy}" id="assignedByUpdateId" maxLength="12" />
+							<Label text="Technician Note" />
+							<Input value="{TechnicianNote}" id="technicianNoteUpdateId" />
+	
+							<Label text="" />
+							<Button text="Save" type="Accept" press="onSaveManagerUpdate" id="saveBtnManagUpdate" />
+							<Button text="Close" type="Accept" press="onCloseManagerUpdate" id="closeBtnManagUpdate" />
+						</f:content>
+					</f:SimpleForm>
+				</l:content>
+			</l:Grid>
+
+			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdTicketManagChange">
+				<l:content>
+					<f:SimpleForm id="ChangeDetailsForm" minWidth="1024"
+						maxContainerCols="2" editable="true" layout="ResponsiveGridLayout"
+						title="Change Status of Service Ticket" labelSpanL="3" labelSpanM="3"
+						emptySpanL="4" emptySpanM="4" columnsL="1" columnsM="1" class="editableForm">
+						<f:content>
+							<Label text="Ticket ID" />
+							<Input value="{Id}" id="ticketChangeId" type="Number" maxLength="5" />
+							<Label text="Reporter Name" />
+							<Input value="{PersonName}" id="personNameChangeId" maxLength="40" />
+							<Label text="Issue" />
+							<Input value="{Issue}" id="issueChangeId" />
+							<Label text="Machine ID" />
+							<Input value="{MachineId}" id="machineChangeId" maxLength="3" />
+							<Label text="Priority" />
+							<Select id="priorityChangeId" selectedKey="{Priority}">
+								<items>
+									<core:Item text="0" key="0" />
+									<core:Item text="1" key="1" />
+									<core:Item text="2" key="2" />
+								</items>
+							</Select>
+
+							<Label text="Reported On" />
+							<Input value="{ReportedOn}" id="reportedOnChangeId" maxLength="20" />
+							<Label text="Expected Completion Time" />
+							<Input value="{ExpctedCompltDt}" id="expctedCompltDtChangeId" maxLength="20" placeholder="DD/MM/YYYY" />
+							<Label text="Status" />
+							<Select id="statusChangeId" selectedKey="{Status}">
+								<items>
+									<core:Item text="1" key="1" />
+									<core:Item text="2" key="2" />
+									<core:Item text="3" key="3" />
+								</items>
+							</Select>
+
+							<Label text="Assigned To" />
+							<Input value="{AssignedTo}" id="assignedToChangeId" maxLength="12" />
+							<Label text="Assigned By" />
+							<Input value="{AssignedBy}" id="assignedByChangeId" maxLength="12" />
+							<Label text="Technician Note" />
+							<Input value="{TechnicianNote}" id="technicianNoteChangeId" />
+							<Label text="" />
+							<Button text="Change Status" type="Accept" press="onSaveManagerChange" id="saveBtnManagChange" />
+							<Button text="Close" type="Accept" press="onCloseManagerChange" id="closeBtnManagChange" />
+						</f:content>
+					</f:SimpleForm>
+				</l:content>
+			</l:Grid>
+
+		</content>
+	</Page>
+</core:View>
+
+				
+					
+			
+				
+		
+			
+	
