@@ -34,21 +34,28 @@ sap.ui.define([
 
 		onCreateTicketManag : function(){
 			var oTickets = this.getView().byId("service_tickets_manager_id");
-			var contexts = oTickets.getSelectedContexts();
-
+			
 			oTickets.setBusy(true);
 
+			var createBtn = this.getView().byId("idCreateTicketManag");
+			var readBtn = this.getView().byId("idReadTicket");
+			var updateBtn = this.getView().byId("idUpdateTicketManag");
+			var changeBtn = this.getView().byId("idChangeTicketManag");
+			var deleteBtn = this.getView().byId("idDeleteTicketManag");
+
+			createBtn.setEnabled(false);
+			readBtn.setEnabled(false);
+			updateBtn.setEnabled(false);
+			changeBtn.setEnabled(false);
+			deleteBtn.setEnabled(false);
+			
 			var oGridTicketCreate = this.getView().byId("gridIdTicketManagCreate");
 			oGridTicketCreate.setVisible(true);
 			oGridTicketCreate.focus();
-
+			
 			var oSave = this.getView().byId("saveBtnManagCreate");
 			oSave.setText("Create");
 			oSave.setVisible(true);
-
-			var items = contexts.map(function(c){
-				return c.getObject();
-			});
 
 			var oTicketId = this.getView().byId("ticketCreateId");
 			oTicketId.setEditable(true);
@@ -111,7 +118,19 @@ sap.ui.define([
 
 			var oGrid = view.byId("gridIdTicketManagCreate");
 			oGrid.setVisible(false);
+			
+			var createBtn = this.getView().byId("idCreateTicketManag");
+			var readBtn = this.getView().byId("idReadTicket");
+			var updateBtn = this.getView().byId("idUpdateTicketManag");
+			var changeBtn = this.getView().byId("idChangeTicketManag");
+			var deleteBtn = this.getView().byId("idDeleteTicketManag");
 
+			createBtn.setEnabled(true);			
+			readBtn.setEnabled(true);
+			updateBtn.setEnabled(true);
+			changeBtn.setEnabled(true);
+			deleteBtn.setEnabled(true);
+			
 			oServiceTicket.setBusy(false);
 			oServiceTicket.focus();
 			view.setModel(oModel);
@@ -120,11 +139,24 @@ sap.ui.define([
 
 		onCloseManagerCreate : function(){
 
+			var oGridTicketCreate = this.getView().byId("gridIdTicketManagCreate");
+			oGridTicketCreate.setVisible(false);
+			
+			var createBtn = this.getView().byId("idCreateTicketManag");
+			var readBtn = this.getView().byId("idReadTicket");
+			var updateBtn = this.getView().byId("idUpdateTicketManag");
+			var changeBtn = this.getView().byId("idChangeTicketManag");
+			var deleteBtn = this.getView().byId("idDeleteTicketManag");
+
+			createBtn.setEnabled(true);			
+			readBtn.setEnabled(true);
+			updateBtn.setEnabled(true);
+			changeBtn.setEnabled(true);
+			deleteBtn.setEnabled(true);
+			
 			var oTickets = this.getView().byId("service_tickets_manager_id");
 			oTickets.setBusy(false);
 			oTickets.focus();
-			var oGridTicketsUpdate = this.getView().byId("gridIdTicketManagCreate");
-			oGridTicketsUpdate.setVisible(false);
 
 		},
 
@@ -137,7 +169,19 @@ sap.ui.define([
 			}
 			else{
 				oTickets.setBusy(true);
+				
+				var createBtn = this.getView().byId("idCreateTicketManag");
+				var readBtn = this.getView().byId("idReadTicket");
+				var updateBtn = this.getView().byId("idUpdateTicketManag");
+				var changeBtn = this.getView().byId("idChangeTicketManag");
+				var deleteBtn = this.getView().byId("idDeleteTicketManag");
 
+				createBtn.setEnabled(false);
+				readBtn.setEnabled(false);
+				updateBtn.setEnabled(false);
+				changeBtn.setEnabled(false);
+				deleteBtn.setEnabled(false);
+				
 				var oGridTicketDetails = this.getView().byId("gridIdTicketManagRead");
 				oGridTicketDetails.setVisible(true);
 				oGridTicketDetails.focus();
@@ -197,11 +241,24 @@ sap.ui.define([
 
 		onCloseManagerRead : function(){
 
+			var oGridTicketDetails = this.getView().byId("gridIdTicketManagRead");
+			oGridTicketDetails.setVisible(false);
+			
+			var createBtn = this.getView().byId("idCreateTicketManag");
+			var readBtn = this.getView().byId("idReadTicket");
+			var updateBtn = this.getView().byId("idUpdateTicketManag");
+			var changeBtn = this.getView().byId("idChangeTicketManag");
+			var deleteBtn = this.getView().byId("idDeleteTicketManag");
+
+			createBtn.setEnabled(true);			
+			readBtn.setEnabled(true);
+			updateBtn.setEnabled(true);
+			changeBtn.setEnabled(true);
+			deleteBtn.setEnabled(true);
+			
 			var oTickets = this.getView().byId("service_tickets_manager_id");
 			oTickets.setBusy(false);
 			oTickets.focus();
-			var oGridTicketsDetails = this.getView().byId("gridIdTicketManagRead");
-			oGridTicketsDetails.setVisible(false);
 
 		},
 
@@ -214,6 +271,18 @@ sap.ui.define([
 			}
 			else{
 				oTickets.setBusy(true);
+				
+				var createBtn = this.getView().byId("idCreateTicketManag");
+				var readBtn = this.getView().byId("idReadTicket");
+				var updateBtn = this.getView().byId("idUpdateTicketManag");
+				var changeBtn = this.getView().byId("idChangeTicketManag");
+				var deleteBtn = this.getView().byId("idDeleteTicketManag");
+
+				createBtn.setEnabled(false);
+				readBtn.setEnabled(false);
+				updateBtn.setEnabled(false);
+				changeBtn.setEnabled(false);
+				deleteBtn.setEnabled(false);
 
 				var oGridTicketUpdate = this.getView().byId("gridIdTicketManagUpdate");
 				oGridTicketUpdate.setVisible(true);
@@ -307,11 +376,21 @@ sap.ui.define([
 				}
 			});	
 
-
-
 			var oGrid = view.byId("gridIdTicketManagUpdate");
 			oGrid.setVisible(false);
 
+			var createBtn = this.getView().byId("idCreateTicketManag");
+			var readBtn = this.getView().byId("idReadTicket");
+			var updateBtn = this.getView().byId("idUpdateTicketManag");
+			var changeBtn = this.getView().byId("idChangeTicketManag");
+			var deleteBtn = this.getView().byId("idDeleteTicketManag");
+
+			createBtn.setEnabled(true);			
+			readBtn.setEnabled(true);
+			updateBtn.setEnabled(true);
+			changeBtn.setEnabled(true);
+			deleteBtn.setEnabled(true);
+			
 			oServiceTicket.setBusy(false);
 			oServiceTicket.focus();
 			view.setModel(oModel);
@@ -320,12 +399,25 @@ sap.ui.define([
 
 		onCloseManagerUpdate : function(){
 
+			var oGridTicketUpdate = this.getView().byId("gridIdTicketManagUpdate");
+			oGridTicketUpdate.setVisible(false);
+			
+			var createBtn = this.getView().byId("idCreateTicketManag");
+			var readBtn = this.getView().byId("idReadTicket");
+			var updateBtn = this.getView().byId("idUpdateTicketManag");
+			var changeBtn = this.getView().byId("idChangeTicketManag");
+			var deleteBtn = this.getView().byId("idDeleteTicketManag");
+
+			createBtn.setEnabled(true);			
+			readBtn.setEnabled(true);
+			updateBtn.setEnabled(true);
+			changeBtn.setEnabled(true);
+			deleteBtn.setEnabled(true);
+			
 			var oTickets = this.getView().byId("service_tickets_manager_id");
 			oTickets.setBusy(false);
 			oTickets.focus();
-			var oGridTicketsUpdate = this.getView().byId("gridIdTicketManagUpdate");
-			oGridTicketsUpdate.setVisible(false);
-
+			
 		},
 
 		oldStatus: "",
@@ -339,6 +431,18 @@ sap.ui.define([
 			}
 			else{
 				oTickets.setBusy(true);
+				
+				var createBtn = this.getView().byId("idCreateTicketManag");
+				var readBtn = this.getView().byId("idReadTicket");
+				var updateBtn = this.getView().byId("idUpdateTicketManag");
+				var changeBtn = this.getView().byId("idChangeTicketManag");
+				var deleteBtn = this.getView().byId("idDeleteTicketManag");
+
+				createBtn.setEnabled(false);
+				readBtn.setEnabled(false);
+				updateBtn.setEnabled(false);
+				changeBtn.setEnabled(false);
+				deleteBtn.setEnabled(false);
 
 				var oGridTicketUpdate = this.getView().byId("gridIdTicketManagChange");
 				oGridTicketUpdate.setVisible(true);
@@ -443,6 +547,18 @@ sap.ui.define([
 			var oGrid = view.byId("gridIdTicketManagChange");
 			oGrid.setVisible(false);
 
+			var createBtn = this.getView().byId("idCreateTicketManag");
+			var readBtn = this.getView().byId("idReadTicket");
+			var updateBtn = this.getView().byId("idUpdateTicketManag");
+			var changeBtn = this.getView().byId("idChangeTicketManag");
+			var deleteBtn = this.getView().byId("idDeleteTicketManag");
+
+			createBtn.setEnabled(true);			
+			readBtn.setEnabled(true);
+			updateBtn.setEnabled(true);
+			changeBtn.setEnabled(true);
+			deleteBtn.setEnabled(true);
+			
 			oServiceTicket.setBusy(false);
 			oServiceTicket.focus();
 			view.setModel(oModel);
@@ -452,11 +568,24 @@ sap.ui.define([
 
 		onCloseManagerChange : function(){
 
+			var oGridTicketChange = this.getView().byId("gridIdTicketManagChange");
+			oGridTicketChange.setVisible(false);
+
+			var createBtn = this.getView().byId("idCreateTicketManag");
+			var readBtn = this.getView().byId("idReadTicket");
+			var updateBtn = this.getView().byId("idUpdateTicketManag");
+			var changeBtn = this.getView().byId("idChangeTicketManag");
+			var deleteBtn = this.getView().byId("idDeleteTicketManag");
+
+			createBtn.setEnabled(true);			
+			readBtn.setEnabled(true);
+			updateBtn.setEnabled(true);
+			changeBtn.setEnabled(true);
+			deleteBtn.setEnabled(true);
+			
 			var oTickets = this.getView().byId("service_tickets_manager_id");
 			oTickets.setBusy(false);
 			oTickets.focus();
-			var oGridTicketsChange = this.getView().byId("gridIdTicketManagChange");
-			oGridTicketsChange.setVisible(false);
 
 		},
 
