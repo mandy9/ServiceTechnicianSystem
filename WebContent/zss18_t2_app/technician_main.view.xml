@@ -8,60 +8,59 @@
 				<Title id="title" text=""></Title>
 
 				<ToolbarSpacer />
-
-				<ToggleButton icon="sap-icon://complete"
-					tooltip="Show only tickets with COMPLETE status" press="toggleStatusCompleteFilter"
-					pressed="{ui>/completeFilterOn}" />
-				<ToggleButton icon="sap-icon://task" tooltip="Show only tickets with DONE status"
-					press="toggleStatusDoneFilter" pressed="{ui>/doneFilterOn}" />
-				<ToggleButton icon="sap-icon://wrench"
+					<ToggleButton icon="sap-icon://lightbulb" id='new' tooltip="Show only tickets with NEW status"
+					press="toggleNewFilter" pressed="{ui>/newFilterOn}" />
+					<ToggleButton icon="sap-icon://wrench" id='progress'
 					tooltip="Show only tickets with IN PROGRESS status" press="toggleInProgressFilter"
 					pressed="{ui>/inprogressFilterOn}" />
-				<ToggleButton icon="sap-icon://lightbulb" tooltip="Show only tickets with NEW status"
-					press="toggleNewFilter" pressed="{ui>/newFilterOn}" />
-				<Button icon="sap-icon://decline" tooltip="Clear all filters"
+					<ToggleButton icon="sap-icon://task" id='done' tooltip="Show only tickets with DONE status"
+					press="toggleStatusDoneFilter" pressed="{ui>/doneFilterOn}" />
+					<ToggleButton icon="sap-icon://complete" id='complete'
+					tooltip="Show only tickets with CLOSED status" press="toggleStatusCompleteFilter"
+					pressed="{ui>/completeFilterOn}" />
+				<Button icon="sap-icon://decline" id='clear' tooltip="Clear all filters"
 					press="clearAllFilters" />
 				<ToolbarSeparator />
-				<SearchField placeholder="Search globally" value="{ui>/globalFilter}"
+				<SearchField placeholder="Search"
 					search="filterGlobally" width="15rem" />
 			</Toolbar>
 
 			<Table id="service_tickets_technician_id" items="{/TicketSet}"
-				growing="true" mode="SingleSelectLeft" growingScrollToLoad="true" filter="filterGlobally">
+				growing="true" mode="SingleSelectLeft" growingScrollToLoad="true">
 
 
 				<columns>
-					<Column filterProperty="Id" defaultFilterOperator="EQ">
+					<Column filterProperty="Id">
 						<Text text="Ticket ID" />
 					</Column>
-					<Column filterProperty="PersonName" filterType="sap.ui.model.type.String" defaultFilterOperator="StartsWith">
-						<Text text="Reporter Name" />
+					<Column filterProperty="PersonName" filterType="sap.ui.model.type.String">
+						<Text text="Reporter Name"/>
 					</Column>
 					<Column filterProperty="Issue" >
 						<Text text="Issue" />
 					</Column>
-					<Column filterProperty="MachineId" >
+					<Column filterProperty="Machine_Id" >
 						<Text text="Machine ID" />
 					</Column>
 					<Column filterProperty="Priority" >
 						<Text text="Priority" />
 					</Column>
-					<Column filterProperty="ReportedOn" >
+					<Column filterProperty="Reported_On" >
 						<Text text="Reported On" />
 					</Column>
-					<Column filterProperty="ExpctedCompltDt" >
+					<Column filterProperty="Expcted_Complt_Dt" >
 						<Text text="Expected Completion Time" />
 					</Column>
 					<Column filterProperty="Status" >
 						<Text text="Status" />
 					</Column>
-					<Column filterProperty="AssignedTo" >
+					<Column filterProperty="Assigned_To" >
 						<Text text="Assigned To" />
 					</Column>
-					<Column filterProperty="AssignedBy" >
+					<Column filterProperty="Assigned_By" >
 						<Text text="Assigned By" />
 					</Column>
-					<Column filterProperty="TechnicianNote" >
+					<Column filterProperty="Technician_Note" >
 						<Text text="Technician Note" />
 					</Column>
 				</columns>
@@ -69,16 +68,16 @@
 					<ColumnListItem>
 						<cells>
 							<Text text="{Id}" />
-							<Text text="{PersonName}" />
+							<Text text="{Person_Name}" />
 							<Text text="{Issue}" />
-							<Text text="{MachineId}" />
+							<Text text="{Machine_Id}" />
 							<Text text="{Priority}" />
-							<Text text="{ReportedOn}" />
-							<Text text="{ExpctedCompltDt}" />
+							<Text text="{Reported_On}" />
+							<Text text="{Expcted_Complt_Dt}" />
 							<Text text="{Status}" />
-							<Text text="{AssignedTo}" />
-							<Text text="{AssignedBy}" />
-							<Text text="{TechnicianNote}" />
+							<Text text="{Assigned_To}" />
+							<Text text="{Assigned_By}" />
+							<Text text="{Technician_Note}" />
 						</cells>
 					</ColumnListItem>
 				</items>
@@ -104,26 +103,26 @@ Clear all filters:All filters can be cleared via the button with the cross icon 
 							<Label text="Ticket ID" />
 							<Input value="{Id}" id="ticketId" type="Number" maxLength="5" />
 							<Label text="Reporter Name" />
-							<Input value="{PersonName}" id="personNameId" maxLength="40" />
+							<Input value="{Person_Name}" id="personNameId" maxLength="40" />
 							<Label text="Issue" />
 							<Input value="{Issue}" id="issueId" />
 							<Label text="Machine ID" />
-							<Input value="{MachineId}" id="machineId" maxLength="3" />
+							<Input value="{Machine_Id}" id="machineId" maxLength="3" />
 							<Label text="Priority" />
 							<Input value="{Priority}" id="priorityId" maxLength="1" />
 							<Label text="Reported On" />
-							<Input value="{ReportedOn}" id="reportedOnId" maxLength="20" />
+							<Input value="{Reported_On}" id="reportedOnId" maxLength="20" />
 							<Label text="Expected Completion Time" />
-							<Input value="{ExpctedCompltDt}" id="expctedCompltDtId"
+							<Input value="{Expcted_Complt_Dt}" id="expctedCompltDtId"
 								maxLength="20" />
 							<Label text="Status" />
 							<Input value="{Status}" id="statusId" maxLength="1" />
 							<Label text="Assigned To" />
-							<Input value="{AssignedTo}" id="assignedToId" maxLength="12" />
+							<Input value="{Assigned_To}" id="assignedToId" maxLength="12" />
 							<Label text="Assigned By" />
-							<Input value="{AssignedBy}" id="assignedById" maxLength="12" />
+							<Input value="{Assigned_By}" id="assignedById" maxLength="12" />
 							<Label text="Technician Note" />
-							<Input value="{TechnicianNote}" id="technicianNoteId" />
+							<Input value="{Technician_Note}" id="technicianNoteId" />
 							<Button text="Close" type="Accept" press="onCloseTechnicianRead"
 								id="closeBtnTechRead" />
 						</f:content>
@@ -144,12 +143,12 @@ Clear all filters:All filters can be cleared via the button with the cross icon 
 							<Input value="{Id}" id="ticketUpdateId" type="Number"
 								maxLength="5" />
 							<Label text="Reporter Name" />
-							<Input value="{PersonName}" id="personNameUpdateId"
+							<Input value="{Person_Name}" id="personNameUpdateId"
 								maxLength="40" />
 							<Label text="Issue" />
 							<Input value="{Issue}" id="issueUpdateId" />
 							<Label text="Machine ID" />
-							<Input value="{MachineId}" id="machineUpdateId" maxLength="3" />
+							<Input value="{Machine_Id}" id="machineUpdateId" maxLength="3" />
 							<Label text="Priority" />
 							<Select id="priorityUpdateId" selectedKey="{Priority}">
 								<items>
@@ -160,10 +159,10 @@ Clear all filters:All filters can be cleared via the button with the cross icon 
 							</Select>
 
 							<Label text="Reported On" />
-							<Input value="{ReportedOn}" id="reportedOnUpdateId"
+							<Input value="{Reported_On}" id="reportedOnUpdateId"
 								maxLength="20" />
 							<Label text="Expected Completion Time" />
-							<Input value="{ExpctedCompltDt}" id="expctedCompltDtUpdateId"
+							<Input value="{Expcted_Complt_Dt}" id="expctedCompltDtUpdateId"
 								maxLength="20" placeholder="DD/MM/YYYY" />
 							<Label text="Status" />
 							<Select id="statusUpdateId" selectedKey="{Status}">
@@ -176,13 +175,13 @@ Clear all filters:All filters can be cleared via the button with the cross icon 
 							</Select>
 
 							<Label text="Assigned To" />
-							<Input value="{AssignedTo}" id="assignedToUpdateId"
+							<Input value="{Assigned_To}" id="assignedToUpdateId"
 								maxLength="12" />
 							<Label text="Assigned By" />
-							<Input value="{AssignedBy}" id="assignedByUpdateId"
+							<Input value="{Assigned_By}" id="assignedByUpdateId"
 								maxLength="12" />
 							<Label text="Technician Note" />
-							<Input value="{TechnicianNote}" id="technicianNoteUpdateId" />
+							<Input value="{Technician_Note}" id="technicianNoteUpdateId" />
 							<Button text="Save" type="Accept" press="onSaveTechnicianUpdate"
 								id="saveBtnTechUpdate" />
 							<Button text="Close" type="Accept" press="onCloseTechnicianUpdate"
