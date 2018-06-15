@@ -28,7 +28,6 @@
 			<Table id="service_tickets_technician_id" items="{/TicketSet}"
 				growing="true" mode="SingleSelectLeft" growingScrollToLoad="true">
 
-
 				<columns>
 					<Column filterProperty="Id">
 						<Text text="Ticket ID" />

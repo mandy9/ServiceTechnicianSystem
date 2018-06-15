@@ -22,9 +22,9 @@ return Controller.extend("zss18_t2_app.technician_main", {
 	
 	onInit : function() {
 	
-		var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
-		var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
-		var view = this.getView().setModel(oModel);
+		this.filteronTechnicianView();
+		
+		
 		var oGridTicketDetails = this.getView().byId("gridIdTicketTechRead");
 		var oGridTicketUpdate = this.getView().byId("gridIdTicketTechUpdate");
 		oGridTicketDetails.setVisible(false);
@@ -32,6 +32,20 @@ return Controller.extend("zss18_t2_app.technician_main", {
 		
 		var _oGlobalFilter = null;
 		var _oStatusFilter = null;
+	},
+	
+	
+	filteronTechnicianView : function(view) {
+		
+		var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
+		var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
+		var view = this.getView().setModel(oModel);
+		var userName = "JIMMY";
+		var _FilterOnTechnicianView = null;
+		_FilterOnTechnicianView = new sap.ui.model.Filter([
+			new sap.ui.model.Filter("Assigned_To", sap.ui.model.FilterOperator.EQ, userName),], false);
+		
+		this.byId("service_tickets_technician_id").getBinding("items").filter(_FilterOnTechnicianView, "Application");
 	},
 	
 	filterGlobally : function(oEvent) {
