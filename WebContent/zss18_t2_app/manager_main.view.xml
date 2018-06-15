@@ -88,6 +88,7 @@
 			<Button text="Create" type="Accept" press="onCreateTicketManag" id="idCreateTicketManag" />			
 			<Button text="Read" type="Accept" press="onReadTicketManag" id="idReadTicket" />
 			<Button text="Update" type="Accept" press="onUpdateTicketManag" id="idUpdateTicketManag" />
+			<Button text="Change Machine / Technician" type="Accept" press="onChangeMTTicketManag" id="idChangeMTTicketManag" />
 			<Button text="Change Status" type="Accept" press="onChangeTicketManag" id="idChangeTicketManag" />
 			<Button text="Delete" type="Accept" press="onDeleteTicketManag" id="idDeleteTicketManag" />
 			
@@ -221,6 +222,59 @@
 				</l:content>
 			</l:Grid>
 
+			<!-- Grid for changing Machine ID or Technician for some specific ticket-->
+			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdTicketManagChangeMT"> 		
+				<l:content>
+					<f:SimpleForm id="ChangeMTDetailsForm" minWidth="1024"
+						maxContainerCols="2" editable="true" layout="ResponsiveGridLayout"
+						title="Change Machine or Technician for Service Ticket" labelSpanL="3" labelSpanM="3"
+						emptySpanL="4" emptySpanM="4" columnsL="1" columnsM="1" class="editableForm">
+						<f:content>
+							<Label text="Ticket ID" />
+							<Input value="{Id}" id="ticketChangeMTId" type="Number" maxLength="5" />
+							<Label text="Reporter Name" />
+							<Input value="{Person_Name}" id="personNameChangeMTId" maxLength="40" />
+							<Label text="Issue" />
+							<Input value="{Issue}" id="issueChangeMTId" />
+							<Label text="Machine ID" />
+							<Input value="{Machine_Id}" id="machineChangeMTId" maxLength="3" />
+							<Label text="Priority" />
+							<Select id="priorityChangeMTId" selectedKey="{Priority}">
+								<items>
+									<core:Item text="0" key="0" />
+									<core:Item text="1" key="1" />
+									<core:Item text="2" key="2" />
+								</items>
+							</Select>
+
+							<Label text="Reported On" />
+							<Input value="{Reported_On}" id="reportedOnChangeMTId" maxLength="20" />
+				<!-- 		<Label text="Expected Completion Time" />
+							<Input value="{Expcted_Complt_Dt}" id="expctedCompltDtChangeMTId" maxLength="20" placeholder="DD/MM/YYYY" />   
+							<Label text="Status" />
+							<Select id="statusChangeMTId" selectedKey="{Status}">
+								<items>
+									<core:Item text="1" key="1" />
+									<core:Item text="2" key="2" />
+									<core:Item text="3" key="3" />
+								</items>
+							</Select>
+				-->
+							<Label text="Assigned To" />
+							<Input value="{Assigned_To}" id="assignedToChangeMTId" maxLength="12" />
+				<!--		<Label text="Assigned By" />
+							<Input value="{Assigned_By}" id="assignedByChangeMTId" maxLength="12" />
+							<Label text="Technician Note" />
+							<Input value="{Technician_Note}" id="technicianNoteChangeMTId" /> 	-->
+							<Label text="" />
+							<Button text="Change Machine / Technician" type="Accept" press="onSaveManagerChangeMT" id="saveBtnManagChangeMT" />
+							<Button text="Close" type="Accept" press="onCloseManagerChangeMT" id="closeBtnManagChangeMT" />
+						</f:content>
+					</f:SimpleForm>
+				</l:content>
+			</l:Grid>
+			
+			<!-- Grid for changing status for some specific ticket-->
 			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdTicketManagChange">
 				<l:content>
 					<f:SimpleForm id="ChangeDetailsForm" minWidth="1024"
@@ -275,11 +329,3 @@
 		</content>
 	</Page>
 </core:View>
-
-				
-					
-			
-				
-		
-			
-	
