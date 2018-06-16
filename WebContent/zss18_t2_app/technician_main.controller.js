@@ -27,23 +27,24 @@ return Controller.extend("zss18_t2_app.technician_main", {
 		
 		var oGridTicketDetails = this.getView().byId("gridIdTicketTechRead");
 		var oGridTicketUpdate = this.getView().byId("gridIdTicketTechUpdate");
+		var oGridTicketChange = this.getView().byId("gridIdTicketTechChange");
 		oGridTicketDetails.setVisible(false);
 		oGridTicketUpdate.setVisible(false);
+		oGridTicketChange.setVisible(false);
 		
 		var _oGlobalFilter = null;
 		var _oStatusFilter = null;
 	},
 	
-	
+	userName: "JIMMY",
 	filteronTechnicianView : function(view) {
 		
 		var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
 		var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
 		var view = this.getView().setModel(oModel);
-		var userName = "JIMMY";
 		var _FilterOnTechnicianView = null;
 		_FilterOnTechnicianView = new sap.ui.model.Filter([
-			new sap.ui.model.Filter("Assigned_To", sap.ui.model.FilterOperator.EQ, userName),], false);
+			new sap.ui.model.Filter("Assigned_To", sap.ui.model.FilterOperator.EQ, this.userName),], false);
 		
 		this.byId("service_tickets_technician_id").getBinding("items").filter(_FilterOnTechnicianView, "Application");
 	},
@@ -208,7 +209,8 @@ return Controller.extend("zss18_t2_app.technician_main", {
 		
 	},
 	
-
+	oldStatus: "",
+	
 	onUpdateTicketTech : function(){
 		var oTickets = this.getView().byId("service_tickets_technician_id");
 		var contexts = oTickets.getSelectedContexts();
@@ -258,13 +260,15 @@ return Controller.extend("zss18_t2_app.technician_main", {
 			oReportOn.setValue(items[0].Reported_On);
 
 			var oExpComplTime = this.getView().byId("expctedCompltDtUpdateId");
-			oExpComplTime.setEditable(true);
 			oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
-			
+/*			
 			var oStatus = this.getView().byId("statusUpdateId");
 			oStatus.setEnabled(true);
 			oStatus.setSelectedKey(items[0].Status);
-
+*/			
+			var oStatus = this.getView().byId("statusUpdateId");
+			oStatus.setSelectedKey(items[0].Status);
+			
 			var oAssignedTo = this.getView().byId("assignedToUpdateId");
 			oAssignedTo.setEditable(false);
 			oAssignedTo.setValue(items[0].Assigned_To);
@@ -274,9 +278,23 @@ return Controller.extend("zss18_t2_app.technician_main", {
 			oAssignedBy.setValue(items[0].Assigned_By);
 			
 			var oTechnicianNote = this.getView().byId("technicianNoteUpdateId");
-			oTechnicianNote.setEditable(true);
 			oTechnicianNote.setValue(items[0].Technician_Note);
-				
+
+			if(items[0].Status=="2" || items[0].Status=="3"){
+				oSave.setEnabled(false);	
+				oExpComplTime.setEditable(false);
+				oTechnicianNote.setEditable(false);
+				oStatus.setEnabled(false);
+
+			}else{
+				oSave.setEnabled(true);	
+				oExpComplTime.setEditable(true);
+				oTechnicianNote.setEditable(true);
+				oStatus.setEnabled(true);		
+				this.oldStatus = items[0].Status;
+			}	
+
+			
 		}	
 	},
 	
@@ -297,67 +315,81 @@ return Controller.extend("zss18_t2_app.technician_main", {
 				return false;
 			} else return true;
 		};
+			
+	
+		var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
+		var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
+		var view = this.getView();
+		var oServiceTicket = view.byId("service_tickets_technician_id");
 		
-
-	var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
-	var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
-	var view = this.getView();
-	var oServiceTicket = view.byId("service_tickets_technician_id");
-	
-
-	
-	
-	var oNewTable = {
-			Id : parseInt(view.byId("ticketUpdateId").getValue()),
-			Person_Name : view.byId("personNameUpdateId").getValue(),
-			Issue : view.byId("issueUpdateId").getValue(),
-			Machine_Id : parseInt(view.byId("machineUpdateId").getValue()),
-			Priority : view.byId("priorityUpdateId").getSelectedItem().getText(),
-			Reported_On : view.byId("reportedOnUpdateId").getValue(),
-			Expcted_Complt_Dt : view.byId("expctedCompltDtUpdateId").getValue(),
-			Status : view.byId("statusUpdateId").getSelectedItem().getText(),
-			Assigned_To : view.byId("assignedToUpdateId").getValue(),
-			Assigned_By : view.byId("assignedByUpdateId").getValue(),
-			Technician_Note : view.byId("technicianNoteUpdateId").getValue(),
-	};
-
-	if(validateDate(oNewTable.Expcted_Complt_Dt)){
 		
+		var oNewTable = {
+				Id : parseInt(view.byId("ticketUpdateId").getValue()),
+				Person_Name : view.byId("personNameUpdateId").getValue(),
+				Issue : view.byId("issueUpdateId").getValue(),
+				Machine_Id : parseInt(view.byId("machineUpdateId").getValue()),
+				Priority : view.byId("priorityUpdateId").getSelectedItem().getText(),
+				Reported_On : view.byId("reportedOnUpdateId").getValue(),
+				Expcted_Complt_Dt : view.byId("expctedCompltDtUpdateId").getValue(),
+				Status : view.byId("statusUpdateId").getSelectedItem().getText(),
+				Assigned_To : view.byId("assignedToUpdateId").getValue(),
+				Assigned_By : view.byId("assignedByUpdateId").getValue(),
+				Technician_Note : view.byId("technicianNoteUpdateId").getValue(),
+		};
+	
+		if(oNewTable.Status == this.oldStatus || oNewTable.Expcted_Complt_Dt == "" || oNewTable.Technician_Note == "" ){
+			sap.m.MessageToast.show("Error! Please enter some expected date and note! And make sure that Old and New status of ticket must be different")
+		}
+		else if(oNewTable.Status == "3"){
+			sap.m.MessageToast.show("Error! Techician can not close a ticket")
+		}
+		else if(this.oldStatus == "0" && oNewTable.Status == "2"){
+			sap.m.MessageToast.show("Error! New ticket can not be directly moved to Done")
+		}
+		else if(this.oldStatus == "1" && oNewTable.Status == "0"){
+			sap.m.MessageToast.show("Error! An Inprogress ticket's status can not be changed to New")
+		}
+		else if(validateDate(oNewTable.Expcted_Complt_Dt)){
+			
 			oModel.update("/TicketSet("+oNewTable.Id+")", oNewTable, {
 				method: "PUT",
 				success: function(oData, oResponse) {
-					sap.m.MessageToast.show("Data successfully updated!")
+					sap.m.MessageToast.show("Status successfully updated!")
 				},
 				error: function(oError) {
-					sap.m.MessageToast.show("Error during updating data!")
+					sap.m.MessageToast.show("Error during updating status!")
 				}
 			});	
+
+			var oGrid = view.byId("gridIdTicketTechUpdate");
+			oGrid.setVisible(false);
+
+			var oSave = view.byId("saveBtnTechUpdate");
+			oSave.setText("Save");
+			oSave.setVisible(false);
+
+			oServiceTicket.setBusy(false);
+			oServiceTicket.focus();
 			
-	}
+			
+			view.setModel(oModel);
+			var _FilterOnTechnicianView = null;
+			_FilterOnTechnicianView = new sap.ui.model.Filter([
+				new sap.ui.model.Filter("Assigned_To", sap.ui.model.FilterOperator.EQ, this.userName),], false);
+			
+			this.byId("service_tickets_technician_id").getBinding("items").filter(_FilterOnTechnicianView, "Application");
 
+			
+			view.getModel();
 
-
-	var oGrid = view.byId("gridIdTicketTechUpdate");
-	oGrid.setVisible(false);
-
-	var oSave = view.byId("saveBtnTechUpdate");
-	oSave.setText("Save");
-	oSave.setVisible(false);
-
-	oServiceTicket.setBusy(false);
-	oServiceTicket.focus();
-	view.setModel(oModel);
-	view.getModel();
-},
-
-clearAllFilters : function(oEvent) {
-	this.clearButtons(false,false,false,false);
+		}
+		else{
+			sap.m.MessageToast.show("Error! Please enter date in correct i.e. designated format (which must be in future)")
+		}
 	
-	var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
-	var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
-	var view = this.getView().setModel(oModel);
-},
 	
+		
+	},
 	
 	onCloseTechnicianUpdate : function(){
 		
@@ -368,6 +400,209 @@ clearAllFilters : function(oEvent) {
 		oGridTicketsUpdate.setVisible(false);
 		
 	},
+
+	oldET: "",
+	oldNote: "",
+	
+	onChangeTicketTech : function(){
+		var oTickets = this.getView().byId("service_tickets_technician_id");
+		var contexts = oTickets.getSelectedContexts();
+		
+		if(contexts.length==0){
+			alert("Please select a Row from the Service Tickets Table.");
+		}
+		else{
+			oTickets.setBusy(true);
+			
+			var oGridTicketChange = this.getView().byId("gridIdTicketTechChange");
+			oGridTicketChange.setVisible(true);
+			oGridTicketChange.focus();
+			
+			var oSave = this.getView().byId("saveBtnTechChange");
+			oSave.setText("Update");
+			oSave.setVisible(true);
+			
+			var items = contexts.map(function(c){
+				return c.getObject();
+			});
+			
+			var oTicketId = this.getView().byId("ticketChangeId");
+			oTicketId.setEditable(false);
+			oTicketId.setValue(items[0].Id);
+			
+			var oPersonName = this.getView().byId("personNameChangeId");
+			oPersonName.setEditable(false);
+			oPersonName.setValue(items[0].Person_Name);
+			
+			
+			var oIssue = this.getView().byId("issueChangeId");
+			oIssue.setEditable(false);
+			oIssue.setValue(items[0].Issue);
+			
+			var oMachineId = this.getView().byId("machineChangeId");
+			oMachineId.setEnabled(false);
+			oMachineId.setValue(items[0].Machine_Id);
+			
+			var oPriority = this.getView().byId("priorityChangeId");
+			oPriority.setEnabled(false);
+			oPriority.setSelectedKey(items[0].Priority);
+			
+			
+			var oReportOn = this.getView().byId("reportedOnChangeId");
+			oReportOn.setEditable(false);
+			oReportOn.setValue(items[0].Reported_On);
+
+			var oExpComplTime = this.getView().byId("expctedCompltDtChangeId");
+			oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
+			
+			var oStatus = this.getView().byId("statusChangeId");
+			oStatus.setEnabled(false);
+			oStatus.setSelectedKey(items[0].Status);
+			
+			var oStatus = this.getView().byId("statusChangeId");
+			oStatus.setSelectedKey(items[0].Status);
+			
+			var oAssignedTo = this.getView().byId("assignedToChangeId");
+			oAssignedTo.setEditable(false);
+			oAssignedTo.setValue(items[0].Assigned_To);
+			
+			var oAssignedBy = this.getView().byId("assignedByChangeId");
+			oAssignedBy.setEditable(false);
+			oAssignedBy.setValue(items[0].Assigned_By);
+			
+			var oTechnicianNote = this.getView().byId("technicianNoteChangeId");
+			oTechnicianNote.setValue(items[0].Technician_Note);
+
+			if(items[0].Status=="3"){
+				oSave.setEnabled(false);	
+				oExpComplTime.setEditable(false);
+				oTechnicianNote.setEditable(false);
+			}else{
+				oSave.setEnabled(true);	
+				oExpComplTime.setEditable(true);
+				this.oldET = items[0].Expcted_Complt_Dt;
+				oTechnicianNote.setEditable(true);
+				this.oldNote = items[0].Technician_Note;
+			}	
+
+			
+		}	
+	},
+	
+	onSaveTechnicianChange: function(){		
+		
+			const validateDate = (selectedDate) => {
+			
+			if(!moment(selectedDate, "DD/MM/YYYY", true).isValid()){
+				sap.m.MessageToast.show("The entered date for expected completion is invalid! Please try again with correct format suggested.");
+				return false;
+			} 
+			
+			var selectedDate = moment(selectedDate, "DD/MM/YYYY");
+			var currentdate = moment(moment(), "DD/MM/YYYY");   
+			
+			if(selectedDate.isBefore(currentdate) || selectedDate.isSame(currentdate)){
+				sap.m.MessageToast.show("The expected completion date must be in future! Please try again.");
+				return false;
+			} else return true;
+		};
+			
+	
+		var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
+		var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
+		var view = this.getView();
+		var oServiceTicket = view.byId("service_tickets_technician_id");
+		
+		
+		var oNewTable = {
+				Id : parseInt(view.byId("ticketChangeId").getValue()),
+				Person_Name : view.byId("personNameChangeId").getValue(),
+				Issue : view.byId("issueChangeId").getValue(),
+				Machine_Id : parseInt(view.byId("machineChangeId").getValue()),
+				Priority : view.byId("priorityChangeId").getSelectedItem().getText(),
+				Reported_On : view.byId("reportedOnChangeId").getValue(),
+				Expcted_Complt_Dt : view.byId("expctedCompltDtChangeId").getValue(),
+				Status : view.byId("statusChangeId").getSelectedItem().getText(),
+				Assigned_To : view.byId("assignedToChangeId").getValue(),
+				Assigned_By : view.byId("assignedByChangeId").getValue(),
+				Technician_Note : view.byId("technicianNoteChangeId").getValue(),
+		};
+	
+		if(oNewTable.Expcted_Complt_Dt == "" || oNewTable.Technician_Note == "" ){
+			sap.m.MessageToast.show("Error! Please enter some expected date and note!")
+		}
+		else if(oNewTable.Expcted_Complt_Dt == this.oldET && oNewTable.Technician_Note == this.oldNote){
+			sap.m.MessageToast.show("Error! Please make sure that atleast something is changed")
+		}
+		else if(validateDate(oNewTable.Expcted_Complt_Dt)){
+			
+			oModel.update("/TicketSet("+oNewTable.Id+")", oNewTable, {
+				method: "PUT",
+				success: function(oData, oResponse) {
+					sap.m.MessageToast.show("Status successfully updated!")
+				},
+				error: function(oError) {
+					sap.m.MessageToast.show("Error during updating status!")
+				}
+			});	
+
+			var oGrid = view.byId("gridIdTicketTechChange");
+			oGrid.setVisible(false);
+
+			var oSave = view.byId("saveBtnTechChange");
+			oSave.setText("Save");
+			oSave.setVisible(false);
+
+			oServiceTicket.setBusy(false);
+			oServiceTicket.focus();
+			
+			
+			view.setModel(oModel);
+			var _FilterOnTechnicianView = null;
+			_FilterOnTechnicianView = new sap.ui.model.Filter([
+				new sap.ui.model.Filter("Assigned_To", sap.ui.model.FilterOperator.EQ, this.userName),], false);
+			
+			this.byId("service_tickets_technician_id").getBinding("items").filter(_FilterOnTechnicianView, "Application");
+
+			
+			view.getModel();
+
+		}
+		else{
+			sap.m.MessageToast.show("Error! Please enter date in correct i.e. designated format (which must be in future)")
+		}
+	
+	
+		
+	},
+	
+	onCloseTechnicianChange : function(){
+		
+		var oTickets = this.getView().byId("service_tickets_technician_id");
+		oTickets.setBusy(false);
+		oTickets.focus();
+		var oGridTicketsChange = this.getView().byId("gridIdTicketTechChange");
+		oGridTicketsChange.setVisible(false);
+		
+	},	
+	
+	
+	clearAllFilters : function(oEvent) {
+		this.clearButtons(false,false,false,false);
+		
+		var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
+		var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
+		var view = this.getView().setModel(oModel);
+		var _FilterOnTechnicianView = null;
+		_FilterOnTechnicianView = new sap.ui.model.Filter([
+			new sap.ui.model.Filter("Assigned_To", sap.ui.model.FilterOperator.EQ, this.userName),], false);
+		
+		this.byId("service_tickets_technician_id").getBinding("items").filter(_FilterOnTechnicianView, "Application");
+	
+	},
+		
+	
+
 	
 	
 /*

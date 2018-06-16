@@ -84,8 +84,9 @@
 			<Toolbar>
 			
 			<Button text="Read" type="Accept" press="onReadTicketTech" id="idReadTicket" />
-			<Button text="Update" type="Accept" press="onUpdateTicketTech"
-				id="idUpdateTicketTech" />
+			<Button text="Change Status" type="Accept" press="onUpdateTicketTech" id="idUpdateTicketTech" />
+			<Button text="Change Expected Time/Tech Note" type="Accept" press="onChangeTicketTech" id="idChangeTicketTech" />
+			
 				<ToolbarSpacer />
 			<ToggleButton icon="sap-icon://message-information" tooltip="Filter field in the Toolbar:The filter field triggers a binding based filtering on all columns.
 Clear all filters:All filters can be cleared via the button with the cross icon in the toolbar."
@@ -130,8 +131,7 @@ Clear all filters:All filters can be cleared via the button with the cross icon 
 				</l:content>
 			</l:Grid>
 
-			<l:Grid defaultSpan="L12 M12 S12" width="auto"
-				id="gridIdTicketTechUpdate">
+			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdTicketTechUpdate">
 				<l:content>
 
 					<f:SimpleForm id="UpdateDetailsForm" minWidth="1024"
@@ -183,14 +183,72 @@ Clear all filters:All filters can be cleared via the button with the cross icon 
 							<Label text="Technician Note" />
 							<Input value="{Technician_Note}" id="technicianNoteUpdateId" />
 							<Label text="" />
-							<Button text="Save" type="Accept" press="onSaveTechnicianUpdate"
-								id="saveBtnTechUpdate" />
-							<Button text="Close" type="Accept" press="onCloseTechnicianUpdate"
-								id="closeBtnTechUpdate" />
+							<Button text="Save" type="Accept" press="onSaveTechnicianUpdate" id="saveBtnTechUpdate" />
+							<Button text="Close" type="Accept" press="onCloseTechnicianUpdate" id="closeBtnTechUpdate" />
 						</f:content>
 					</f:SimpleForm>
 				</l:content>
 			</l:Grid>
+
+			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdTicketTechChange">
+				<l:content>
+
+					<f:SimpleForm id="ChangeDetailsForm" minWidth="1024"
+						maxContainerCols="2" editable="true" layout="ResponsiveGridLayout"
+						title="Change ET / Tech Note of Service Ticket" labelSpanL="3" labelSpanM="3"
+						emptySpanL="4" emptySpanM="4" columnsL="1" columnsM="1" class="editableForm">
+						<f:content>
+							<Label text="Ticket ID" />
+							<Input value="{Id}" id="ticketChangeId" type="Number"
+								maxLength="5" />
+							<Label text="Reporter Name" />
+							<Input value="{Person_Name}" id="personNameChangeId"
+								maxLength="40" />
+							<Label text="Issue" />
+							<Input value="{Issue}" id="issueChangeId" />
+							<Label text="Machine ID" />
+							<Input value="{Machine_Id}" id="machineChangeId" maxLength="3" />
+							<Label text="Priority" />
+							<Select id="priorityChangeId" selectedKey="{Priority}">
+								<items>
+									<core:Item text="0" key="0" />
+									<core:Item text="1" key="1" />
+									<core:Item text="2" key="2" />
+								</items>
+							</Select>
+
+							<Label text="Reported On" />
+							<Input value="{Reported_On}" id="reportedOnChangeId"
+								maxLength="20" />
+							<Label text="Expected Completion Time" />
+							<Input value="{Expcted_Complt_Dt}" id="expctedCompltDtChangeId"
+								maxLength="20" placeholder="DD/MM/YYYY" />
+							<Label text="Status" />
+							<Select id="statusChangeId" selectedKey="{Status}">
+								<items>
+									<core:Item text="0" key="0" />
+									<core:Item text="1" key="1" />
+									<core:Item text="2" key="2" />
+									<core:Item text="3" key="3" />
+								</items>
+							</Select>
+
+							<Label text="Assigned To" />
+							<Input value="{Assigned_To}" id="assignedToChangeId"
+								maxLength="12" />
+							<Label text="Assigned By" />
+							<Input value="{Assigned_By}" id="assignedByChangeId"
+								maxLength="12" />
+							<Label text="Technician Note" />
+							<Input value="{Technician_Note}" id="technicianNoteChangeId" />
+							<Label text="" />
+							<Button text="Save" type="Accept" press="onSaveTechnicianChange" id="saveBtnTechChange" />
+							<Button text="Close" type="Accept" press="onCloseTechnicianChange" id="closeBtnTechChange" />
+						</f:content>
+					</f:SimpleForm>
+				</l:content>
+			</l:Grid>
+
 		</content>
 	</Page>
 </core:View>

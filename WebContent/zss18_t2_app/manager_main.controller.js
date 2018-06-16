@@ -99,7 +99,7 @@ sap.ui.define([
 			var oNewTable = {
 					Id : parseInt(view.byId("ticketCreateId").getValue()),
 					Person_Name : view.byId("personNameCreateId").getValue().toUpperCase(),
-					Issue : view.byId("issueCreateId").getValue().toUpperCase(),
+					Issue : view.byId("issueCreateId").getValue(),
 					Machine_Id : parseInt(view.byId("machineCreateId").getValue()),
 					Priority : view.byId("priorityCreateId").getSelectedItem().getText(),
 					Reported_On : moment().format('DD/MM/YYYY').toString(),
@@ -274,6 +274,10 @@ sap.ui.define([
 
 		},
 
+		oldRName: "",
+		oldIssue: "",
+		oldPriority: "",
+		
 		onUpdateTicketManag : function(){
 			var oTickets = this.getView().byId("service_tickets_manager_id");
 			var contexts = oTickets.getSelectedContexts();
@@ -317,11 +321,12 @@ sap.ui.define([
 				var oPersonName = this.getView().byId("personNameUpdateId");
 				oPersonName.setEditable(true);
 				oPersonName.setValue(items[0].Person_Name);
-
+				this.oldRName = items[0].Person_Name;
 
 				var oIssue = this.getView().byId("issueUpdateId");
 				oIssue.setEditable(true);
 				oIssue.setValue(items[0].Issue);
+				this.oldIssue = items[0].Issue;
 
 				var oMachineId = this.getView().byId("machineUpdateId");
 				oMachineId.setEnabled(false);
@@ -330,7 +335,7 @@ sap.ui.define([
 				var oPriority = this.getView().byId("priorityUpdateId");
 				oPriority.setEnabled(true);
 				oPriority.setSelectedKey(items[0].Priority);
-
+				this.oldPriority = items[0].Priority;
 
 				var oReportOn = this.getView().byId("reportedOnUpdateId");
 				oReportOn.setEditable(false);
@@ -369,7 +374,7 @@ sap.ui.define([
 			var oNewTable = {
 					Id : parseInt(view.byId("ticketUpdateId").getValue()),
 					Person_Name : view.byId("personNameUpdateId").getValue().toUpperCase(),
-					Issue : view.byId("issueUpdateId").getValue().toUpperCase(),
+					Issue : view.byId("issueUpdateId").getValue(),
 					Machine_Id : parseInt(view.byId("machineUpdateId").getValue()),
 					Priority : view.byId("priorityUpdateId").getSelectedItem().getText(),
 					Reported_On : view.byId("reportedOnUpdateId").getValue(),
@@ -377,40 +382,46 @@ sap.ui.define([
 					Status : view.byId("statusUpdateId").getSelectedItem().getText(),
 					Assigned_To : view.byId("assignedToUpdateId").getValue().toUpperCase(),
 					Assigned_By : view.byId("assignedByUpdateId").getValue().toUpperCase(),
-					Technician_Note : view.byId("technicianNoteUpdateId").getValue().toUpperCase(),
+					Technician_Note : view.byId("technicianNoteUpdateId").getValue(),
 			};
 
-			oModel.update("/TicketSet("+oNewTable.Id+")", oNewTable, {
-				method: "PUT",
-				success: function(oData, oResponse) {
-					sap.m.MessageToast.show("Data successfully updated!")
-				},
-				error: function(oError) {
-					sap.m.MessageToast.show("Error during updating data!")
-				}
-			});	
+			if(!(oNewTable.Person_Name == this.oldRName && oNewTable.Issue == this.oldIssue && oNewTable.Priority == this.oldPriority)){
+				oModel.update("/TicketSet("+oNewTable.Id+")", oNewTable, {
+					method: "PUT",
+					success: function(oData, oResponse) {
+						sap.m.MessageToast.show("Data successfully updated!")
+					},
+					error: function(oError) {
+						sap.m.MessageToast.show("Error during updating data!")
+					}
+				});	
 
-			var oGrid = view.byId("gridIdTicketManagUpdate");
-			oGrid.setVisible(false);
+				var oGrid = view.byId("gridIdTicketManagUpdate");
+				oGrid.setVisible(false);
 
-			var createBtn = this.getView().byId("idCreateTicketManag");
-			var readBtn = this.getView().byId("idReadTicket");
-			var updateBtn = this.getView().byId("idUpdateTicketManag");
-			var changeMTBtn = this.getView().byId("idChangeMTTicketManag");
-			var changeBtn = this.getView().byId("idChangeTicketManag");
-			var deleteBtn = this.getView().byId("idDeleteTicketManag");
+				var createBtn = this.getView().byId("idCreateTicketManag");
+				var readBtn = this.getView().byId("idReadTicket");
+				var updateBtn = this.getView().byId("idUpdateTicketManag");
+				var changeMTBtn = this.getView().byId("idChangeMTTicketManag");
+				var changeBtn = this.getView().byId("idChangeTicketManag");
+				var deleteBtn = this.getView().byId("idDeleteTicketManag");
 
-			createBtn.setEnabled(true);			
-			readBtn.setEnabled(true);
-			updateBtn.setEnabled(true);
-			changeMTBtn.setEnabled(true);
-			changeBtn.setEnabled(true);
-			deleteBtn.setEnabled(true);
+				createBtn.setEnabled(true);			
+				readBtn.setEnabled(true);
+				updateBtn.setEnabled(true);
+				changeMTBtn.setEnabled(true);
+				changeBtn.setEnabled(true);
+				deleteBtn.setEnabled(true);
+				
+				oServiceTicket.setBusy(false);
+				oServiceTicket.focus();
+				view.setModel(oModel);
+				view.getModel();	
+			}
+			else{
+				sap.m.MessageToast.show("Error! Please make sure that atleast something is changed")
+			}
 			
-			oServiceTicket.setBusy(false);
-			oServiceTicket.focus();
-			view.setModel(oModel);
-			view.getModel();
 		},
 
 		onCloseManagerUpdate : function(){
@@ -537,7 +548,7 @@ sap.ui.define([
 			var oNewTable = {
 					Id : parseInt(view.byId("ticketChangeMTId").getValue()),
 					Person_Name : view.byId("personNameChangeMTId").getValue().toUpperCase(),
-					Issue : view.byId("issueChangeMTId").getValue().toUpperCase(),
+					Issue : view.byId("issueChangeMTId").getValue(),
 					Machine_Id : parseInt(view.byId("machineChangeMTId").getValue()),
 					Priority : view.byId("priorityChangeMTId").getSelectedItem().getText(),
 					Reported_On : view.byId("reportedOnChangeMTId").getValue(),
@@ -558,34 +569,35 @@ sap.ui.define([
 					error: function(oError) {
 						sap.m.MessageToast.show("Error during updating data!")
 					}
-				});					
+				});		
+				
+				var oGrid = view.byId("gridIdTicketManagChangeMT");
+				oGrid.setVisible(false);
+
+				var createBtn = this.getView().byId("idCreateTicketManag");
+				var readBtn = this.getView().byId("idReadTicket");
+				var updateBtn = this.getView().byId("idUpdateTicketManag");
+				var changeMTBtn = this.getView().byId("idChangeMTTicketManag");
+				var changeBtn = this.getView().byId("idChangeTicketManag");
+				var deleteBtn = this.getView().byId("idDeleteTicketManag");
+
+				createBtn.setEnabled(true);			
+				readBtn.setEnabled(true);
+				updateBtn.setEnabled(true);
+				changeMTBtn.setEnabled(true);
+				changeBtn.setEnabled(true);
+				deleteBtn.setEnabled(true);
+				
+				oServiceTicket.setBusy(false);
+				oServiceTicket.focus();
+				view.setModel(oModel);
+				view.getModel();
+				
 			}
 			else{
-				sap.m.MessageToast.show("Please make sure that atleast something is changed")
+				sap.m.MessageToast.show("Error! Please make sure that atleast something is changed")
 			}
 
-
-			var oGrid = view.byId("gridIdTicketManagChangeMT");
-			oGrid.setVisible(false);
-
-			var createBtn = this.getView().byId("idCreateTicketManag");
-			var readBtn = this.getView().byId("idReadTicket");
-			var updateBtn = this.getView().byId("idUpdateTicketManag");
-			var changeMTBtn = this.getView().byId("idChangeMTTicketManag");
-			var changeBtn = this.getView().byId("idChangeTicketManag");
-			var deleteBtn = this.getView().byId("idDeleteTicketManag");
-
-			createBtn.setEnabled(true);			
-			readBtn.setEnabled(true);
-			updateBtn.setEnabled(true);
-			changeMTBtn.setEnabled(true);
-			changeBtn.setEnabled(true);
-			deleteBtn.setEnabled(true);
-			
-			oServiceTicket.setBusy(false);
-			oServiceTicket.focus();
-			view.setModel(oModel);
-			view.getModel();
 		},
 
 
@@ -683,9 +695,16 @@ sap.ui.define([
 				oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
 
 				var oStatus = this.getView().byId("statusChangeId");
-				oStatus.setEnabled(true);
 				oStatus.setSelectedKey(items[0].Status);
-				this.oldStatus = items[0].Status;
+
+				if(items[0].Status=="0" || items[0].Status=="1" || items[0].Status=="3"){
+					oSave.setEnabled(false);	
+					oStatus.setEnabled(false);
+				}else{
+					oSave.setEnabled(true);	
+					oStatus.setEnabled(true);		
+					this.oldStatus = items[0].Status;
+				}					
 
 				var oAssignedTo = this.getView().byId("assignedToChangeId");
 				oAssignedTo.setEditable(false);
@@ -712,7 +731,7 @@ sap.ui.define([
 			var oNewTable = {
 					Id : parseInt(view.byId("ticketChangeId").getValue()),
 					Person_Name : view.byId("personNameChangeId").getValue().toUpperCase(),
-					Issue : view.byId("issueChangeId").getValue().toUpperCase(),
+					Issue : view.byId("issueChangeId").getValue(),
 					Machine_Id : parseInt(view.byId("machineChangeId").getValue()),
 					Priority : view.byId("priorityChangeId").getSelectedItem().getText(),
 					Reported_On : view.byId("reportedOnChangeId").getValue(),
@@ -720,47 +739,54 @@ sap.ui.define([
 					Status : view.byId("statusChangeId").getSelectedItem().getText(),
 					Assigned_To : view.byId("assignedToChangeId").getValue().toUpperCase(),
 					Assigned_By : view.byId("assignedByChangeId").getValue().toUpperCase(),
-					Technician_Note : view.byId("technicianNoteChangeId").getValue().toUpperCase(),
+					Technician_Note : view.byId("technicianNoteChangeId").getValue(),
 			};
 
-			if(oNewTable.Status != this.oldStatus && oNewTable.Expcted_Complt_Dt != "" && oNewTable.Technician_Note != ""){
+			if(oNewTable.Status == "0"){
+				sap.m.MessageToast.show("Error! Ticket's status can not be changed to New")
+			}
+			else if(oNewTable.Status == this.oldStatus){
+				sap.m.MessageToast.show("Error! Old and New status of ticket must be different")
+			}
+			else if(oNewTable.Status == "1" || oNewTable.Status == "3"){
 
 				oModel.update("/TicketSet("+oNewTable.Id+")", oNewTable, {
 					method: "PUT",
 					success: function(oData, oResponse) {
-						sap.m.MessageToast.show("Data successfully updated!")
+						sap.m.MessageToast.show("Status successfully updated!")
 					},
 					error: function(oError) {
-						sap.m.MessageToast.show("Error during updating data!")
+						sap.m.MessageToast.show("Error during updating status!")
 					}
 				});	
+				
+				var oGrid = view.byId("gridIdTicketManagChange");
+				oGrid.setVisible(false);
+
+				var createBtn = this.getView().byId("idCreateTicketManag");
+				var readBtn = this.getView().byId("idReadTicket");
+				var updateBtn = this.getView().byId("idUpdateTicketManag");
+				var changeMTBtn = this.getView().byId("idChangeMTTicketManag");
+				var changeBtn = this.getView().byId("idChangeTicketManag");
+				var deleteBtn = this.getView().byId("idDeleteTicketManag");
+
+				createBtn.setEnabled(true);			
+				readBtn.setEnabled(true);
+				updateBtn.setEnabled(true);
+				changeMTBtn.setEnabled(true);
+				changeBtn.setEnabled(true);
+				deleteBtn.setEnabled(true);
+				
+				oServiceTicket.setBusy(false);
+				oServiceTicket.focus();
+				view.setModel(oModel);
+				view.getModel();
+
 			}
 			else{
-				sap.m.MessageToast.show("Please make sure that technician has given some expected date and notes, and that old status and new status should be different")
+				sap.m.MessageToast.show("Unforeseen Error")
 			}
 
-
-			var oGrid = view.byId("gridIdTicketManagChange");
-			oGrid.setVisible(false);
-
-			var createBtn = this.getView().byId("idCreateTicketManag");
-			var readBtn = this.getView().byId("idReadTicket");
-			var updateBtn = this.getView().byId("idUpdateTicketManag");
-			var changeMTBtn = this.getView().byId("idChangeMTTicketManag");
-			var changeBtn = this.getView().byId("idChangeTicketManag");
-			var deleteBtn = this.getView().byId("idDeleteTicketManag");
-
-			createBtn.setEnabled(true);			
-			readBtn.setEnabled(true);
-			updateBtn.setEnabled(true);
-			changeMTBtn.setEnabled(true);
-			changeBtn.setEnabled(true);
-			deleteBtn.setEnabled(true);
-			
-			oServiceTicket.setBusy(false);
-			oServiceTicket.focus();
-			view.setModel(oModel);
-			view.getModel();
 		},
 
 
