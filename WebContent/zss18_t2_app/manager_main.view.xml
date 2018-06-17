@@ -8,6 +8,12 @@
 				<Title id="title" text=""></Title>
 
 				<ToolbarSpacer />
+					<ToggleButton icon="sap-icon://sort-ascending" id='sortasc'
+					tooltip="Sort by priority ASC" press="toggleSortPriorityASC"
+					pressed="{ui>/sortPriorityASCOn}" />
+					<ToggleButton icon="sap-icon://sort-descending" id='sortdesc'
+					tooltip="Sort by priority DESC" press="toggleSortPriorityDESC"
+					pressed="{ui>/sortPriorityDESCOn}" />
 					<ToggleButton icon="sap-icon://lightbulb" id='new' tooltip="Show only tickets with NEW status"
 					press="toggleNewFilter" pressed="{ui>/newFilterOn}" />
 					<ToggleButton icon="sap-icon://wrench" id='progress'

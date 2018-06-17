@@ -918,19 +918,23 @@ sap.ui.define([
 			this.byId("service_tickets_manager_id").getBinding("items").filter(_oGlobalFilter, "Application");
 			}},
 			
-		clearButtons : function(complete,done,progress,open) {
-			var oComplete = this.getView().byId("complete");
-			var oDone = this.getView().byId("done");
-			var oProgress = this.getView().byId("progress");
-			var oNew = this.getView().byId("new");
-			oComplete.setPressed(complete);
-			oDone.setPressed(done);
-			oProgress.setPressed(progress);
-			oNew.setPressed(open);
-		},
+			clearButtons : function(complete,done,progress,open,asc,desc) {
+				var oComplete = this.getView().byId("complete");
+				var oDone = this.getView().byId("done");
+				var oProgress = this.getView().byId("progress");
+				var oNew = this.getView().byId("new");
+				var oSortAsc = this.getView().byId("sortasc");
+				var oSortDesc = this.getView().byId("sortdesc");
+				oComplete.setPressed(complete);
+				oDone.setPressed(done);
+				oProgress.setPressed(progress);
+				oNew.setPressed(open);
+				oSortAsc.setPressed(asc);
+				oSortDesc.setPressed(desc);
+			},
 			
 		toggleStatusCompleteFilter: function(oEvent) {
-			this.clearButtons(true,false,false,false);
+			this.clearButtons(true,false,false,false,false,false);
 			
 			var _oGlobalFilter = null;
 						_oGlobalFilter = new sap.ui.model.Filter([
@@ -940,7 +944,7 @@ sap.ui.define([
 						this.byId("service_tickets_manager_id").getBinding("items").filter(_oGlobalFilter, "Application");},
 			
 		toggleStatusDoneFilter: function(oEvent) {
-			this.clearButtons(false,true,false,false);
+			this.clearButtons(false,true,false,false,false,false);
 
 			var _oGlobalFilter = null;
 				_oGlobalFilter = new sap.ui.model.Filter([
@@ -950,7 +954,7 @@ sap.ui.define([
 				this.byId("service_tickets_manager_id").getBinding("items").filter(_oGlobalFilter, "Application");},
 
 		toggleInProgressFilter : function(oEvent) {
-			this.clearButtons(false,false,true,false);
+			this.clearButtons(false,false,true,false,false,false);
 
 			var _oGlobalFilter = null;
 			_oGlobalFilter = new sap.ui.model.Filter([
@@ -960,7 +964,7 @@ sap.ui.define([
 			this.byId("service_tickets_manager_id").getBinding("items").filter(_oGlobalFilter, "Application");},
 
 		toggleNewFilter: function(oEvent) {
-			this.clearButtons(false,false,false,true);
+			this.clearButtons(false,false,false,true,false,false);
 
 			var _oGlobalFilter = null;
 			_oGlobalFilter = new sap.ui.model.Filter([
@@ -970,11 +974,25 @@ sap.ui.define([
 			this.byId("service_tickets_manager_id").getBinding("items").filter(_oGlobalFilter, "Application");},
 			
 			clearAllFilters : function(oEvent) {
-				this.clearButtons(false,false,false,false);
+				this.clearButtons(false,false,false,false,false,false);
 				
 				var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
 				var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
 				var view = this.getView().setModel(oModel);
+			},
+			
+			toggleSortPriorityASC : function(oEvent) {
+				this.clearButtons(false,false,false,false,true,false);
+				
+				var oSorter = new sap.ui.model.Sorter("Priority", false);
+				this.byId("service_tickets_manager_id").getBinding("items").sort(oSorter);
+			},
+			
+			toggleSortPriorityDESC : function(oEvent) {
+				this.clearButtons(false,false,false,false,false,true);
+				
+				var oSorter = new sap.ui.model.Sorter("Priority", true);
+				this.byId("service_tickets_manager_id").getBinding("items").sort(oSorter);
 			},
 
 		/**
