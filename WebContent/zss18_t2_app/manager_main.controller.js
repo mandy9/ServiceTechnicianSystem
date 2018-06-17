@@ -76,7 +76,8 @@ sap.ui.define([
 
 			var oMachineId = this.getView().byId("machineCreateId");
 			oMachineId.setEnabled(true);
-			oMachineId.setValue("");
+			oMachineId.setSelectedKey("");
+//			oMachineId.setValue("");
 
 			var oPriority = this.getView().byId("priorityCreateId");
 			oPriority.setEnabled(true);
@@ -100,7 +101,7 @@ sap.ui.define([
 					Id : parseInt(view.byId("ticketCreateId").getValue()),
 					Person_Name : view.byId("personNameCreateId").getValue().toUpperCase(),
 					Issue : view.byId("issueCreateId").getValue(),
-					Machine_Id : parseInt(view.byId("machineCreateId").getValue()),
+					Machine_Id : parseInt(view.byId("machineCreateId").getSelectedKey()),
 					Priority : view.byId("priorityCreateId").getSelectedItem().getText(),
 					Reported_On : moment().format('DD/MM/YYYY').toString(),
 					Expcted_Complt_Dt : "",
@@ -215,7 +216,8 @@ sap.ui.define([
 
 				var oMachineId = this.getView().byId("machineId");
 				oMachineId.setEnabled(false);
-				oMachineId.setValue(items[0].Machine_Id);
+				oMachineId.setSelectedKey(items[0].Machine_Id);
+//				oMachineId.setValue(items[0].Machine_Id);
 
 				var oPriority = this.getView().byId("priorityId");
 				oPriority.setEditable(false);
@@ -328,9 +330,11 @@ sap.ui.define([
 				oIssue.setValue(items[0].Issue);
 				this.oldIssue = items[0].Issue;
 
+//				console.log(items[0].Machine_Id);
 				var oMachineId = this.getView().byId("machineUpdateId");
 				oMachineId.setEnabled(false);
-				oMachineId.setValue(items[0].Machine_Id);
+				oMachineId.setSelectedKey(items[0].Machine_Id);
+//				oMachineId.setValue(items[0].Machine_Id);
 
 				var oPriority = this.getView().byId("priorityUpdateId");
 				oPriority.setEnabled(true);
@@ -375,7 +379,7 @@ sap.ui.define([
 					Id : parseInt(view.byId("ticketUpdateId").getValue()),
 					Person_Name : view.byId("personNameUpdateId").getValue().toUpperCase(),
 					Issue : view.byId("issueUpdateId").getValue(),
-					Machine_Id : parseInt(view.byId("machineUpdateId").getValue()),
+					Machine_Id : parseInt(view.byId("machineUpdateId").getSelectedKey()),
 					Priority : view.byId("priorityUpdateId").getSelectedItem().getText(),
 					Reported_On : view.byId("reportedOnUpdateId").getValue(),
 					Expcted_Complt_Dt : view.byId("expctedCompltDtUpdateId").getValue(),
@@ -503,7 +507,8 @@ sap.ui.define([
 
 				var oMachineId = this.getView().byId("machineChangeMTId");
 				oMachineId.setEnabled(true);
-				oMachineId.setValue(items[0].Machine_Id);
+				oMachineId.setSelectedKey(items[0].Machine_Id);
+//				oMachineId.setValue(items[0].Machine_Id);
 				this.oldMachine = items[0].Machine_Id;
 				
 				var oPriority = this.getView().byId("priorityChangeMTId");
@@ -549,7 +554,7 @@ sap.ui.define([
 					Id : parseInt(view.byId("ticketChangeMTId").getValue()),
 					Person_Name : view.byId("personNameChangeMTId").getValue().toUpperCase(),
 					Issue : view.byId("issueChangeMTId").getValue(),
-					Machine_Id : parseInt(view.byId("machineChangeMTId").getValue()),
+					Machine_Id : parseInt(view.byId("machineChangeMTId").getSelectedKey()),
 					Priority : view.byId("priorityChangeMTId").getSelectedItem().getText(),
 					Reported_On : view.byId("reportedOnChangeMTId").getValue(),
 					Expcted_Complt_Dt : "",
@@ -679,7 +684,8 @@ sap.ui.define([
 
 				var oMachineId = this.getView().byId("machineChangeId");
 				oMachineId.setEnabled(false);
-				oMachineId.setValue(items[0].Machine_Id);
+				oMachineId.setSelectedKey(items[0].Machine_Id);
+//				oMachineId.setValue(items[0].Machine_Id);
 
 				var oPriority = this.getView().byId("priorityChangeId");
 				oPriority.setEnabled(false);
@@ -732,7 +738,7 @@ sap.ui.define([
 					Id : parseInt(view.byId("ticketChangeId").getValue()),
 					Person_Name : view.byId("personNameChangeId").getValue().toUpperCase(),
 					Issue : view.byId("issueChangeId").getValue(),
-					Machine_Id : parseInt(view.byId("machineChangeId").getValue()),
+					Machine_Id : parseInt(view.byId("machineChangeId").getSelectedKey()),
 					Priority : view.byId("priorityChangeId").getSelectedItem().getText(),
 					Reported_On : view.byId("reportedOnChangeId").getValue(),
 					Expcted_Complt_Dt : view.byId("expctedCompltDtChangeId").getValue(),

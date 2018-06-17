@@ -110,7 +110,11 @@
 							<Label text="Issue" />
 							<Input id="issueCreateId" />
 							<Label text="Machine ID" />
-							<Input value="{Machine_Id}" id="machineCreateId" maxLength="3" />
+							<Select id="machineCreateId" maxWidth="300rem" items="{/MachineSet}">
+								<core:Item key="{Id}" text="{Machine_Name}"/>
+							</Select>
+					<!-- 		<Input value="{Machine_Id}" id="machineCreateId" maxLength="3" />    -->
+							
 							<Label text="Priority" />
 							<Select id="priorityCreateId">
 								<items>
@@ -146,7 +150,10 @@
 							<Label text="Issue" />
 							<Input value="{Issue}" id="issueId" />
 							<Label text="Machine ID" />
-							<Input value="{Machine_Id}" id="machineId" maxLength="3" />
+							<Select id="machineId" maxWidth="300rem" items="{/MachineSet}">
+								<core:Item key="{Id}" text="{Machine_Name}"/>
+							</Select>
+					<!-- 	<Input value="{Machine_Id}" id="machineId" maxLength="3" />    -->
 							<Label text="Priority" />
 							<Input value="{Priority}" id="priorityId" maxLength="1" />
 							<Label text="Reported On" />
@@ -183,7 +190,10 @@
 							<Label text="Issue" />
 							<Input value="{Issue}" id="issueUpdateId" />
 							<Label text="Machine ID" />
-							<Input value="{Machine_Id}" id="machineUpdateId" maxLength="3" />
+							<Select id="machineUpdateId" maxWidth="300rem" items="{/MachineSet}">
+								<core:Item key="{Id}" text="{Machine_Name}"/>
+							</Select>
+					<!-- 		<Input value="{Machine_Id}" id="machineUpdateId" maxLength="3" />    -->
 							<Label text="Priority" />
 							<Select id="priorityUpdateId" selectedKey="{Priority}">
 								<items>
@@ -237,7 +247,11 @@
 							<Label text="Issue" />
 							<Input value="{Issue}" id="issueChangeMTId" />
 							<Label text="Machine ID" />
-							<Input value="{Machine_Id}" id="machineChangeMTId" maxLength="3" />
+							<Select id="machineChangeMTId" maxWidth="300rem" items="{/MachineSet}">
+								<core:Item key="{Id}" text="{Machine_Name}"/>
+							</Select>
+					<!-- 		<Input value="{Machine_Id}" id="machineChangeMTId" maxLength="3" />    -->
+							
 							<Label text="Priority" />
 							<Select id="priorityChangeMTId" selectedKey="{Priority}">
 								<items>
@@ -289,7 +303,11 @@
 							<Label text="Issue" />
 							<Input value="{Issue}" id="issueChangeId" />
 							<Label text="Machine ID" />
-							<Input value="{Machine_Id}" id="machineChangeId" maxLength="3" />
+							<Select id="machineChangeId" maxWidth="300rem" items="{/MachineSet}">
+								<core:Item key="{Id}" text="{Machine_Name}"/>
+							</Select>
+					<!-- 	<Input value="{Machine_Id}" id="machineChangeId" maxLength="3" />    -->
+							
 							<Label text="Priority" />
 							<Select id="priorityChangeId" selectedKey="{Priority}">
 								<items>

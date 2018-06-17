@@ -15,10 +15,10 @@
 
 		<script>
 				sap.ui.localResources("zss18_t2_app");
-				var app = new sap.m.App({initialPage:"idtechnician_main1"});
-				var page = sap.ui.view({id:"idtechnician_main1", viewName:"zss18_t2_app.technician_main", type:sap.ui.core.mvc.ViewType.XML});
-				//var app = new sap.m.App({initialPage:"idmanager_main1"});
-				//var page = sap.ui.view({id:"idmanager_main1", viewName:"zss18_t2_app.manager_main", type:sap.ui.core.mvc.ViewType.XML});
+				//var app = new sap.m.App({initialPage:"idtechnician_main1"});
+				//var page = sap.ui.view({id:"idtechnician_main1", viewName:"zss18_t2_app.technician_main", type:sap.ui.core.mvc.ViewType.XML});
+				var app = new sap.m.App({initialPage:"idmanager_main1"});
+				var page = sap.ui.view({id:"idmanager_main1", viewName:"zss18_t2_app.manager_main", type:sap.ui.core.mvc.ViewType.XML});
 				
 				app.addPage(page);
 				app.placeAt("content");
