@@ -65,11 +65,10 @@ return Controller.extend("zss18_t2_app.technician_main", {
 
 	
 	filterGlobally : function(oEvent) {
-		var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
-		var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
-		var view = this.getView().setModel(oModel);
+		this.filteronTechnicianView();
 		var sQuery = oEvent.getParameter("query");
 		var _oGlobalFilter = null;
+		var _oGlobalFilterIndivTechnician = null;
 		if(sQuery){
 		
 			var int = parseInt(sQuery);
@@ -93,7 +92,9 @@ return Controller.extend("zss18_t2_app.technician_main", {
 			
 		}
 
-		this.byId("service_tickets_technician_id").getBinding("items").filter(_oGlobalFilter, "Application");
+			_oGlobalFilterIndivTechnician = new sap.ui.model.Filter([_oGlobalFilter,
+				new sap.ui.model.Filter("Assigned_To", sap.ui.model.FilterOperator.EQ, this.userName),], true);
+		this.byId("service_tickets_technician_id").getBinding("items").filter(_oGlobalFilterIndivTechnician, "Application");
 		}},
 		
 	clearButtons : function(complete,done,progress,open,asc,desc) {
