@@ -36,6 +36,7 @@ sap.ui.define([
 		currentManagerName: "Zaeem",		/* Have to change it with the name of logged in manager*/
 
 		onCreateTicketManag : function(){
+			this.byId("ManagerPage").scrollTo(300,10);
 			var oTickets = this.getView().byId("service_tickets_manager_id");
 			
 			oTickets.setBusy(true);
@@ -170,6 +171,7 @@ sap.ui.define([
 		},
 
 		onReadTicketManag : function() {
+			this.byId("ManagerPage").scrollTo(500,10);
 			var oTickets = this.getView().byId("service_tickets_manager_id");
 			var contexts = oTickets.getSelectedContexts();
 
@@ -281,6 +283,7 @@ sap.ui.define([
 		oldPriority: "",
 		
 		onUpdateTicketManag : function(){
+			this.byId("ManagerPage").scrollTo(500,10);
 			var oTickets = this.getView().byId("service_tickets_manager_id");
 			var contexts = oTickets.getSelectedContexts();
 
@@ -457,6 +460,7 @@ sap.ui.define([
 		oldTechnician: "",
 		
 		onChangeMTTicketManag : function(){
+			this.byId("ManagerPage").scrollTo(300,10);
 			var oTickets = this.getView().byId("service_tickets_manager_id");
 			var contexts = oTickets.getSelectedContexts();
 
@@ -634,6 +638,7 @@ sap.ui.define([
 		oldStatus: "",
 
 		onChangeTicketManag : function(){
+			this.byId("ManagerPage").scrollTo(500,10);
 			var oTickets = this.getView().byId("service_tickets_manager_id");
 			var contexts = oTickets.getSelectedContexts();
 

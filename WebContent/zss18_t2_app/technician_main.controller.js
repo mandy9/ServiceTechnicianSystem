@@ -154,6 +154,7 @@ return Controller.extend("zss18_t2_app.technician_main", {
 		this.byId("service_tickets_technician_id").getBinding("items").filter(_oGlobalFilter, "Application");},
 	
 	onReadTicketTech : function() {
+		this.byId("TechnicianPage").scrollTo(300,10);
 		var oTickets = this.getView().byId("service_tickets_technician_id");
 		var contexts = oTickets.getSelectedContexts();
 		
@@ -233,6 +234,7 @@ return Controller.extend("zss18_t2_app.technician_main", {
 	oldStatus: "",
 	
 	onUpdateTicketTech : function(){
+		this.byId("TechnicianPage").scrollTo(300,10);
 		var oTickets = this.getView().byId("service_tickets_technician_id");
 		var contexts = oTickets.getSelectedContexts();
 		
@@ -426,6 +428,8 @@ return Controller.extend("zss18_t2_app.technician_main", {
 	oldNote: "",
 	
 	onChangeTicketTech : function(){
+		
+		this.byId("TechnicianPage").scrollTo(300,10);
 		var oTickets = this.getView().byId("service_tickets_technician_id");
 		var contexts = oTickets.getSelectedContexts();
 		

@@ -2,7 +2,7 @@
 	xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form"
 	controllerName="zss18_t2_app.technician_main" xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:t="sap.ui.table">
-	<Page title="Technician View">
+	<Page title="Technician View" enableScrolling="true" id="TechnicianPage">
 		<content>
 			<Toolbar>
 				<Title id="title" text=""></Title>
