@@ -45,8 +45,9 @@ return Controller.extend("zss18_t2_app.technician_main", {
 		var _FilterOnTechnicianView = null;
 		_FilterOnTechnicianView = new sap.ui.model.Filter([
 			new sap.ui.model.Filter("Assigned_To", sap.ui.model.FilterOperator.EQ, this.userName),], false);
-		
+
 		this.byId("service_tickets_technician_id").getBinding("items").filter(_FilterOnTechnicianView, "Application");
+
 	},
 	
 	toggleSortPriorityASC : function(oEvent) {
@@ -154,7 +155,7 @@ return Controller.extend("zss18_t2_app.technician_main", {
 		this.byId("service_tickets_technician_id").getBinding("items").filter(_oGlobalFilter, "Application");},
 	
 	onReadTicketTech : function() {
-		this.byId("TechnicianPage").scrollTo(300,10);
+		this.byId("TechnicianPage").scrollTo(500,10);
 		var oTickets = this.getView().byId("service_tickets_technician_id");
 		var contexts = oTickets.getSelectedContexts();
 		
@@ -234,7 +235,7 @@ return Controller.extend("zss18_t2_app.technician_main", {
 	oldStatus: "",
 	
 	onUpdateTicketTech : function(){
-		this.byId("TechnicianPage").scrollTo(300,10);
+		this.byId("TechnicianPage").scrollTo(500,10);
 		var oTickets = this.getView().byId("service_tickets_technician_id");
 		var contexts = oTickets.getSelectedContexts();
 		
@@ -429,7 +430,7 @@ return Controller.extend("zss18_t2_app.technician_main", {
 	
 	onChangeTicketTech : function(){
 		
-		this.byId("TechnicianPage").scrollTo(300,10);
+		this.byId("TechnicianPage").scrollTo(500,10);
 		var oTickets = this.getView().byId("service_tickets_technician_id");
 		var contexts = oTickets.getSelectedContexts();
 		
