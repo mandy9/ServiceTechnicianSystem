@@ -83,6 +83,33 @@ sap.ui.define([
 			var oAssignedTo = this.getView().byId("assignedToCreateId");
 			oAssignedTo.setEnabled(true);
 
+			var selectedkey = oMachineId.getSelectedKey();
+			var mac_cat = "";
+			const baseUrl = 'http://i67lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/';
+			const dynamParams = 'MachineSet('+selectedkey+')/Mac_Cat/$value';
+			
+			jQuery.ajax({
+				url: baseUrl+dynamParams,
+				method: 'GET',
+//					data: {username: "COPS_USER", password: "init123"},
+//					dataType: 'json',
+				success: function(data) {
+					mac_cat = data;
+					if(mac_cat != ""){
+
+						var _FilterOnAssignedTo = null;
+						_FilterOnAssignedTo = new sap.ui.model.Filter([
+						new sap.ui.model.Filter("Role", sap.ui.model.FilterOperator.EQ, "T"),
+						new sap.ui.model.Filter("Expertise_Type", sap.ui.model.FilterOperator.EQ, ""+mac_cat)
+						], true);
+
+						oAssignedTo.getBinding("items").filter(_FilterOnAssignedTo, "Application");
+						oAssignedTo.setSelectedKey("");
+					}
+				},
+				error: function(err) {alert('Error in json call ', err);}
+			});	
+/*			
 			var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
 			var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
 			var view = this.getView().setModel(oModel);
@@ -96,7 +123,7 @@ sap.ui.define([
 
 			oAssignedTo.setSelectedKey("");
 //			oAssignedTo.setValue("");
-
+*/
 			
 		},
 		
@@ -165,7 +192,7 @@ sap.ui.define([
 					Assigned_By : this.currentManagerName.toUpperCase(),
 					Technician_Note : "",
 			};
-			console.log(oNewTable)
+//			console.log(oNewTable)
 			
 			if(oNewTable.Person_Name != "" && oNewTable.Issue != ""){
 				oModel.create("/TicketSet", oNewTable, {
