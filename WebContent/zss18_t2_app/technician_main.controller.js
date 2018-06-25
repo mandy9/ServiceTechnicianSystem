@@ -36,7 +36,7 @@ return Controller.extend("zss18_t2_app.technician_main", {
 		var _oStatusFilter = null;
 	},
 	
-	userName: "JIMMY",
+	userName: "ABAP-01",//ABAP-01,MASTER-ADM
 	filteronTechnicianView : function(view) {
 		
 		var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
@@ -188,36 +188,57 @@ return Controller.extend("zss18_t2_app.technician_main", {
 			
 			var oMachineId = this.getView().byId("machineId");
 			oMachineId.setEnabled(false);
-			oMachineId.setValue(items[0].Machine_Id);
-			
+			oMachineId.setSelectedKey(items[0].Machine_Id);
+//			oMachineId.setValue(items[0].Machine_Id);
+
 			var oPriority = this.getView().byId("priorityId");
-			oPriority.setEditable(false);
-			oPriority.setValue(items[0].Priority);
-			
-			
+			oPriority.setEnabled(false);
+			oPriority.setSelectedKey(items[0].Priority);
+//			oPriority.setEditable(false);
+//			oPriority.setValue(items[0].Priority);
+
+
 			var oReportOn = this.getView().byId("reportedOnId");
 			oReportOn.setEditable(false);
 			oReportOn.setValue(items[0].Reported_On);
 
 			var oExpComplTime = this.getView().byId("expctedCompltDtId");
-			oExpComplTime.setEditable(false);
-			oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
+			if(items[0].Expcted_Complt_Dt == ""){
+				this.getView().byId("labelExpctedCompltDtId").setVisible(false);
+				oExpComplTime.setVisible(false);
+			}
+			else{
+				oExpComplTime.setEditable(false);
+				oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
+			}
 			
 			var oStatus = this.getView().byId("statusId");
 			oStatus.setEnabled(false);
-			oStatus.setValue(items[0].Status);
+			oStatus.setSelectedKey(items[0].Status);
+//			oStatus.setEditable(false);
+//			oStatus.setValue(items[0].Status);
 
 			var oAssignedTo = this.getView().byId("assignedToId");
-			oAssignedTo.setEditable(false);
-			oAssignedTo.setValue(items[0].Assigned_To);
-			
+			oAssignedTo.setEnabled(false);
+			oAssignedTo.setSelectedKey(items[0].Assigned_To);
+//			oAssignedTo.setEditable(false);
+//			oAssignedTo.setValue(items[0].Assigned_To);
+
 			var oAssignedBy = this.getView().byId("assignedById");
-			oAssignedBy.setEditable(false);
-			oAssignedBy.setValue(items[0].Assigned_By);
-			
+			oAssignedBy.setEnabled(false);
+			oAssignedBy.setSelectedKey(items[0].Assigned_By);
+//			oAssignedBy.setEditable(false);
+//			oAssignedBy.setValue(items[0].Assigned_By);
+
 			var oTechnicianNote = this.getView().byId("technicianNoteId");
-			oTechnicianNote.setEditable(false);
-			oTechnicianNote.setValue(items[0].Technician_Note);
+			if(items[0].Technician_Note == ""){
+				this.getView().byId("labelTechnicianNoteId").setVisible(false);
+				oTechnicianNote.setVisible(false);
+			}
+			else{
+				oTechnicianNote.setEditable(false);
+				oTechnicianNote.setValue(items[0].Technician_Note);
+			}
 				
 		}	
 	},
@@ -272,7 +293,7 @@ return Controller.extend("zss18_t2_app.technician_main", {
 			
 			var oMachineId = this.getView().byId("machineUpdateId");
 			oMachineId.setEnabled(false);
-			oMachineId.setValue(items[0].Machine_Id);
+			oMachineId.setSelectedKey(items[0].Machine_Id);
 			
 			var oPriority = this.getView().byId("priorityUpdateId");
 			oPriority.setEnabled(false);
@@ -291,15 +312,17 @@ return Controller.extend("zss18_t2_app.technician_main", {
 			oStatus.setSelectedKey(items[0].Status);
 */			
 			var oStatus = this.getView().byId("statusUpdateId");
+			oStatus.setEnabled(false);
 			oStatus.setSelectedKey(items[0].Status);
 			
 			var oAssignedTo = this.getView().byId("assignedToUpdateId");
-			oAssignedTo.setEditable(false);
-			oAssignedTo.setValue(items[0].Assigned_To);
+			oAssignedTo.setEnabled(false);
+			oAssignedTo.setSelectedKey(items[0].Assigned_To);
 			
 			var oAssignedBy = this.getView().byId("assignedByUpdateId");
-			oAssignedBy.setEditable(false);
-			oAssignedBy.setValue(items[0].Assigned_By);
+			oAssignedBy.setEnabled(false);
+			oAssignedBy.setSelectedKey(items[0].Assigned_By);
+
 			
 			var oTechnicianNote = this.getView().byId("technicianNoteUpdateId");
 			oTechnicianNote.setValue(items[0].Technician_Note);
@@ -351,18 +374,21 @@ return Controller.extend("zss18_t2_app.technician_main", {
 				Id : parseInt(view.byId("ticketUpdateId").getValue()),
 				Person_Name : view.byId("personNameUpdateId").getValue(),
 				Issue : view.byId("issueUpdateId").getValue(),
-				Machine_Id : parseInt(view.byId("machineUpdateId").getValue()),
-				Priority : view.byId("priorityUpdateId").getSelectedItem().getText(),
+				Machine_Id : parseInt(view.byId("machineUpdateId").getSelectedKey()),
+				Priority : view.byId("priorityUpdateId").getSelectedKey(),
 				Reported_On : view.byId("reportedOnUpdateId").getValue(),
 				Expcted_Complt_Dt : view.byId("expctedCompltDtUpdateId").getValue(),
-				Status : view.byId("statusUpdateId").getSelectedItem().getText(),
-				Assigned_To : view.byId("assignedToUpdateId").getValue(),
-				Assigned_By : view.byId("assignedByUpdateId").getValue(),
+				Status : view.byId("statusUpdateId").getSelectedKey(),
+				Assigned_To : view.byId("assignedToUpdateId").getSelectedKey(),
+				Assigned_By : view.byId("assignedByUpdateId").getSelectedKey(),
 				Technician_Note : view.byId("technicianNoteUpdateId").getValue(),
 		};
 	
-		if(oNewTable.Status == this.oldStatus || oNewTable.Expcted_Complt_Dt == "" || oNewTable.Technician_Note == "" ){
-			sap.m.MessageToast.show("Error! Please enter some expected date and note! And make sure that Old and New status of ticket must be different")
+		if(oNewTable.Status == this.oldStatus){
+			sap.m.MessageToast.show("Error! Please make sure that new status of the ticket is different from previous status")
+		}
+		else if(oNewTable.Expcted_Complt_Dt == "" || oNewTable.Technician_Note == "" ){
+			sap.m.MessageToast.show("Error! Please enter some expected date and note")
 		}
 		else if(oNewTable.Status == "3"){
 			sap.m.MessageToast.show("Error! Techician can not close a ticket")
@@ -467,7 +493,7 @@ return Controller.extend("zss18_t2_app.technician_main", {
 			
 			var oMachineId = this.getView().byId("machineChangeId");
 			oMachineId.setEnabled(false);
-			oMachineId.setValue(items[0].Machine_Id);
+			oMachineId.setSelectedKey(items[0].Machine_Id);
 			
 			var oPriority = this.getView().byId("priorityChangeId");
 			oPriority.setEnabled(false);
@@ -489,12 +515,12 @@ return Controller.extend("zss18_t2_app.technician_main", {
 			oStatus.setSelectedKey(items[0].Status);
 			
 			var oAssignedTo = this.getView().byId("assignedToChangeId");
-			oAssignedTo.setEditable(false);
-			oAssignedTo.setValue(items[0].Assigned_To);
+			oAssignedTo.setEnabled(false);
+			oAssignedTo.setSelectedKey(items[0].Assigned_To);
 			
 			var oAssignedBy = this.getView().byId("assignedByChangeId");
-			oAssignedBy.setEditable(false);
-			oAssignedBy.setValue(items[0].Assigned_By);
+			oAssignedBy.setEnabled(false);
+			oAssignedBy.setSelectedKey(items[0].Assigned_By);
 			
 			var oTechnicianNote = this.getView().byId("technicianNoteChangeId");
 			oTechnicianNote.setValue(items[0].Technician_Note);
@@ -544,13 +570,13 @@ return Controller.extend("zss18_t2_app.technician_main", {
 				Id : parseInt(view.byId("ticketChangeId").getValue()),
 				Person_Name : view.byId("personNameChangeId").getValue(),
 				Issue : view.byId("issueChangeId").getValue(),
-				Machine_Id : parseInt(view.byId("machineChangeId").getValue()),
-				Priority : view.byId("priorityChangeId").getSelectedItem().getText(),
+				Machine_Id : parseInt(view.byId("machineChangeId").getSelectedKey()),
+				Priority : view.byId("priorityChangeId").getSelectedKey(),
 				Reported_On : view.byId("reportedOnChangeId").getValue(),
 				Expcted_Complt_Dt : view.byId("expctedCompltDtChangeId").getValue(),
-				Status : view.byId("statusChangeId").getSelectedItem().getText(),
-				Assigned_To : view.byId("assignedToChangeId").getValue(),
-				Assigned_By : view.byId("assignedByChangeId").getValue(),
+				Status : view.byId("statusChangeId").getSelectedKey(),
+				Assigned_To : view.byId("assignedToChangeId").getSelectedKey(),
+				Assigned_By : view.byId("assignedByChangeId").getSelectedKey(),
 				Technician_Note : view.byId("technicianNoteChangeId").getValue(),
 		};
 	

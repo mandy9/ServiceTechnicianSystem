@@ -122,23 +122,48 @@ Clear all filters:All filters can be cleared via the button with the cross icon 
 							<Label text="Issue" />
 							<Input value="{Issue}" id="issueId" />
 							<Label text="Machine ID" />
-							<Input value="{Machine_Id}" id="machineId" maxLength="3" />
-							<Label text="Priority" />
+							<Select id="machineId" maxWidth="300rem" items="{/MachineSet}">
+								<core:Item key="{Id}" text="{Machine_Name}" />
+							</Select>
+<!-- 						<Input value="{Machine_Id}" id="machineId" maxLength="3" />
 							<Input value="{Priority}" id="priorityId" maxLength="1" />
+							<Input value="{Status}" id="statusId" maxLength="1" />
+							<Input value="{Assigned_To}" id="assignedToId" maxLength="12" />
+							<Input value="{Assigned_By}" id="assignedById" maxLength="12" />
+-->
+							<Label text="Priority" />
+							<Select id="priorityId" selectedKey="{Priority}">
+								<items>
+									<core:Item text="Low" key="0" />
+									<core:Item text="Medium" key="1" />
+									<core:Item text="High" key="2" />
+								</items>
+							</Select>
 							<Label text="Reported On" />
 							<Input value="{Reported_On}" id="reportedOnId" maxLength="20" />
-							<Label text="Expected Completion Time" />
-							<Input value="{Expcted_Complt_Dt}" id="expctedCompltDtId"
-								maxLength="20" />
+							<Label text="Expected Completion Time" id="labelExpctedCompltDtId" />
+							<Input value="{Expcted_Complt_Dt}" id="expctedCompltDtId" maxLength="20" />
 							<Label text="Status" />
-							<Input value="{Status}" id="statusId" maxLength="1" />
+							<Select id="statusId" selectedKey="{Status}">
+								<items>
+									<core:Item text="New" key="0" />
+									<core:Item text="In Progress" key="1" />
+									<core:Item text="Done" key="2" />
+									<core:Item text="Closed" key="3" />
+								</items>
+							</Select>
 							<Label text="Assigned To" />
-							<Input value="{Assigned_To}" id="assignedToId" maxLength="12" />
+							<Select id="assignedToId" maxWidth="300rem" items="{/UserSet}">
+								<core:Item key="{Id}" text="{Name}" />
+							</Select>
 							<Label text="Assigned By" />
-							<Input value="{Assigned_By}" id="assignedById" maxLength="12" />
-							<Label text="Technician Note" />
+							<Select id="assignedById" maxWidth="300rem" items="{/UserSet}">
+								<core:Item key="{Id}" text="{Name}" />
+							</Select>
+							<Label text="Technician Note" id="labelTechnicianNoteId" />
 							<Input value="{Technician_Note}" id="technicianNoteId" />
 							<Label text="" />
+
 							<Button text="Close" type="Accept" press="onCloseTechnicianRead"
 								id="closeBtnTechRead" />
 						</f:content>
@@ -164,16 +189,17 @@ Clear all filters:All filters can be cleared via the button with the cross icon 
 							<Label text="Issue" />
 							<Input value="{Issue}" id="issueUpdateId" />
 							<Label text="Machine ID" />
-							<Input value="{Machine_Id}" id="machineUpdateId" maxLength="3" />
+							<Select id="machineUpdateId" maxWidth="300rem" items="{/MachineSet}">
+								<core:Item key="{Id}" text="{Machine_Name}" />
+							</Select>
 							<Label text="Priority" />
 							<Select id="priorityUpdateId" selectedKey="{Priority}">
 								<items>
-									<core:Item text="0" key="0" />
-									<core:Item text="1" key="1" />
-									<core:Item text="2" key="2" />
+									<core:Item text="Low" key="0" />
+									<core:Item text="Medium" key="1" />
+									<core:Item text="High" key="2" />
 								</items>
 							</Select>
-
 							<Label text="Reported On" />
 							<Input value="{Reported_On}" id="reportedOnUpdateId"
 								maxLength="20" />
@@ -183,19 +209,22 @@ Clear all filters:All filters can be cleared via the button with the cross icon 
 							<Label text="Status" />
 							<Select id="statusUpdateId" selectedKey="{Status}">
 								<items>
-									<core:Item text="0" key="0" />
-									<core:Item text="1" key="1" />
-									<core:Item text="2" key="2" />
-									<core:Item text="3" key="3" />
+									<core:Item text="New" key="0" />
+									<core:Item text="In Progress" key="1" />
+									<core:Item text="Done" key="2" />
+									<core:Item text="Closed" key="3" />
 								</items>
 							</Select>
 
 							<Label text="Assigned To" />
-							<Input value="{Assigned_To}" id="assignedToUpdateId"
-								maxLength="12" />
+							<Select id="assignedToUpdateId" maxWidth="300rem" items="{/UserSet}">
+								<core:Item key="{Id}" text="{Name}" />
+							</Select>
+
 							<Label text="Assigned By" />
-							<Input value="{Assigned_By}" id="assignedByUpdateId"
-								maxLength="12" />
+							<Select id="assignedByUpdateId" maxWidth="300rem" items="{/UserSet}">
+								<core:Item key="{Id}" text="{Name}" />
+							</Select>
 							<Label text="Technician Note" />
 							<Input value="{Technician_Note}" id="technicianNoteUpdateId" />
 							<Label text="" />
@@ -227,13 +256,15 @@ Clear all filters:All filters can be cleared via the button with the cross icon 
 							<Label text="Issue" />
 							<Input value="{Issue}" id="issueChangeId" />
 							<Label text="Machine ID" />
-							<Input value="{Machine_Id}" id="machineChangeId" maxLength="3" />
+							<Select id="machineChangeId" maxWidth="300rem" items="{/MachineSet}">
+								<core:Item key="{Id}" text="{Machine_Name}" />
+							</Select>
 							<Label text="Priority" />
 							<Select id="priorityChangeId" selectedKey="{Priority}">
 								<items>
-									<core:Item text="0" key="0" />
-									<core:Item text="1" key="1" />
-									<core:Item text="2" key="2" />
+									<core:Item text="Low" key="0" />
+									<core:Item text="Medium" key="1" />
+									<core:Item text="High" key="2" />
 								</items>
 							</Select>
 
@@ -246,22 +277,27 @@ Clear all filters:All filters can be cleared via the button with the cross icon 
 							<Label text="Status" />
 							<Select id="statusChangeId" selectedKey="{Status}">
 								<items>
-									<core:Item text="0" key="0" />
-									<core:Item text="1" key="1" />
-									<core:Item text="2" key="2" />
-									<core:Item text="3" key="3" />
+									<core:Item text="New" key="0" />
+									<core:Item text="In Progress" key="1" />
+									<core:Item text="Done" key="2" />
+									<core:Item text="Closed" key="3" />
 								</items>
 							</Select>
 
 							<Label text="Assigned To" />
-							<Input value="{Assigned_To}" id="assignedToChangeId"
-								maxLength="12" />
+							<Select id="assignedToChangeId" maxWidth="300rem" items="{/UserSet}">
+								<core:Item key="{Id}" text="{Name}" />
+							</Select>
+
 							<Label text="Assigned By" />
-							<Input value="{Assigned_By}" id="assignedByChangeId"
-								maxLength="12" />
+							<Select id="assignedByChangeId" maxWidth="300rem" items="{/UserSet}">
+								<core:Item key="{Id}" text="{Name}" />
+							</Select>
+
 							<Label text="Technician Note" />
 							<Input value="{Technician_Note}" id="technicianNoteChangeId" />
 							<Label text="" />
+							
 							<Button text="Save" type="Accept" press="onSaveTechnicianChange"
 								id="saveBtnTechChange" />
 							<Button text="Close" type="Accept" press="onCloseTechnicianChange"

@@ -33,7 +33,7 @@ sap.ui.define([
 
 		},
 		
-		currentManagerName: "Zaeem",		/* Have to change it with the name of logged in manager*/
+		currentManagerName: "ABAP-09",		/* Manager ID:- Have to change it with the name of logged in manager*/
 
 		onCreateTicketManag : function(){
 			this.byId("ManagerPage").scrollTo(300,10);
@@ -63,10 +63,6 @@ sap.ui.define([
 			oSave.setText("Create");
 			oSave.setVisible(true);
 
-			var oTicketId = this.getView().byId("ticketCreateId");
-			oTicketId.setEditable(true);
-			oTicketId.setValue("");
-
 			var oPersonName = this.getView().byId("personNameCreateId");
 			oPersonName.setEditable(true);
 			oPersonName.setValue("");
@@ -85,64 +81,128 @@ sap.ui.define([
 			oPriority.setSelectedKey(2+"");
 
 			var oAssignedTo = this.getView().byId("assignedToCreateId");
-			oAssignedTo.setEditable(true);
-			oAssignedTo.setValue("");
+			oAssignedTo.setEnabled(true);
 
+			var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
+			var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
+			var view = this.getView().setModel(oModel);
+			var _FilterOnAssignedTo = null;
+			_FilterOnAssignedTo = new sap.ui.model.Filter([
+				new sap.ui.model.Filter("Role", sap.ui.model.FilterOperator.EQ, "T"),
+				new sap.ui.model.Filter("Expertise_Type", sap.ui.model.FilterOperator.EQ, "2")
+			], true);
+
+			oAssignedTo.getBinding("items").filter(_FilterOnAssignedTo, "Application");
+
+			oAssignedTo.setSelectedKey("");
+//			oAssignedTo.setValue("");
+
+			
 		},
+		
+		onSelectMachineCreate: function(oEvent){
+//			var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
+//			var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
+			var view = this.getView();
+			view.getModel();
+			
+			var mac_cat = "";
 
+			var machineSelect = view.byId("machineCreateId");
+			var selectedkey = machineSelect.getSelectedKey();
+			
+			console.log(selectedkey);
+			const baseUrl = 'http://i67lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/';
+			const dynamParams = 'MachineSet('+selectedkey+')/Mac_Cat/$value';
+			
+			jQuery.ajax({
+				url: baseUrl+dynamParams,
+				method: 'GET',
+//				data: {username: "COPS_USER", password: "init123"},
+//				dataType: 'json',
+				success: function(data) {
+					mac_cat = data;
+					if(mac_cat != ""){
+						var oAssignedTo = view.byId("assignedToCreateId");
+						oAssignedTo.setEnabled(true);
+
+						var _FilterOnAssignedTo = null;
+						_FilterOnAssignedTo = new sap.ui.model.Filter([
+						new sap.ui.model.Filter("Role", sap.ui.model.FilterOperator.EQ, "T"),
+						new sap.ui.model.Filter("Expertise_Type", sap.ui.model.FilterOperator.EQ, ""+mac_cat)
+						], true);
+
+						oAssignedTo.getBinding("items").filter(_FilterOnAssignedTo, "Application");
+
+						oAssignedTo.setSelectedKey("");
+						machineSelect.setSelectedKey(selectedkey);
+					}
+				},
+				error: function(err) {alert('Error in json call ', err);}
+			});	
+		},
+		
 		onSaveManagerCreate: function(){		
 
-
+			
 			var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
 			var oModel = new sap.ui.model.odata.v2.ODataModel(serviceURL);
 			var view = this.getView();
 			var oServiceTicket = view.byId("service_tickets_manager_id");
 			
+//			console.log(parseInt(view.byId("machineCreateId").getShowSecondaryValues()));
+			
+			
 			var oNewTable = {
-					Id : parseInt(view.byId("ticketCreateId").getValue()),
 					Person_Name : view.byId("personNameCreateId").getValue().toUpperCase(),
 					Issue : view.byId("issueCreateId").getValue(),
 					Machine_Id : parseInt(view.byId("machineCreateId").getSelectedKey()),
-					Priority : view.byId("priorityCreateId").getSelectedItem().getText(),
+					Priority : view.byId("priorityCreateId").getSelectedKey(),
 					Reported_On : moment().format('DD/MM/YYYY').toString(),
 					Expcted_Complt_Dt : "",
 					Status : "0",
-					Assigned_To : view.byId("assignedToCreateId").getValue().toUpperCase(),
+					Assigned_To : view.byId("assignedToCreateId").getSelectedKey(),
 					Assigned_By : this.currentManagerName.toUpperCase(),
 					Technician_Note : "",
 			};
 			console.log(oNewTable)
-			oModel.create("/TicketSet", oNewTable, {
-				method: "POST",
-				success: function(oData, oResponse) {
-					sap.m.MessageToast.show("Data successfully added!")
-				},
-				error: function(oError) {
-					sap.m.MessageToast.show("Error during adding data!")
-				}
-			});	
-
-			var oGrid = view.byId("gridIdTicketManagCreate");
-			oGrid.setVisible(false);
 			
-			var createBtn = this.getView().byId("idCreateTicketManag");
-			var readBtn = this.getView().byId("idReadTicket");
-			var updateBtn = this.getView().byId("idUpdateTicketManag");
-			var changeMTBtn = this.getView().byId("idChangeMTTicketManag");
-			var changeBtn = this.getView().byId("idChangeTicketManag");
-			var deleteBtn = this.getView().byId("idDeleteTicketManag");
-
-			createBtn.setEnabled(true);			
-			readBtn.setEnabled(true);
-			updateBtn.setEnabled(true);
-			changeMTBtn.setEnabled(true);
-			changeBtn.setEnabled(true);
-			deleteBtn.setEnabled(true);
-			
-			oServiceTicket.setBusy(false);
-			oServiceTicket.focus();
-			view.setModel(oModel);
-			view.getModel();
+			if(oNewTable.Person_Name != "" && oNewTable.Issue != ""){
+				oModel.create("/TicketSet", oNewTable, {
+					method: "POST",
+					success: function(oData, oResponse) {
+						sap.m.MessageToast.show("Data successfully added!")
+					},
+					error: function(oError) {
+						sap.m.MessageToast.show("Error during adding data!")
+					}
+				});	
+	
+				var oGrid = view.byId("gridIdTicketManagCreate");
+				oGrid.setVisible(false);
+				
+				var createBtn = this.getView().byId("idCreateTicketManag");
+				var readBtn = this.getView().byId("idReadTicket");
+				var updateBtn = this.getView().byId("idUpdateTicketManag");
+				var changeMTBtn = this.getView().byId("idChangeMTTicketManag");
+				var changeBtn = this.getView().byId("idChangeTicketManag");
+				var deleteBtn = this.getView().byId("idDeleteTicketManag");
+	
+				createBtn.setEnabled(true);			
+				readBtn.setEnabled(true);
+				updateBtn.setEnabled(true);
+				changeMTBtn.setEnabled(true);
+				changeBtn.setEnabled(true);
+				deleteBtn.setEnabled(true);
+				
+				oServiceTicket.setBusy(false);
+				oServiceTicket.focus();
+				view.setModel(oModel);
+				view.getModel();
+			}
+			else{
+				sap.m.MessageToast.show("Error! Enter complete data and then try again")				
+			}
 		},		
 
 		onCloseManagerCreate : function(){
@@ -222,8 +282,10 @@ sap.ui.define([
 //				oMachineId.setValue(items[0].Machine_Id);
 
 				var oPriority = this.getView().byId("priorityId");
-				oPriority.setEditable(false);
-				oPriority.setValue(items[0].Priority);
+				oPriority.setEnabled(false);
+				oPriority.setSelectedKey(items[0].Priority);
+//				oPriority.setEditable(false);
+//				oPriority.setValue(items[0].Priority);
 
 
 				var oReportOn = this.getView().byId("reportedOnId");
@@ -231,30 +293,52 @@ sap.ui.define([
 				oReportOn.setValue(items[0].Reported_On);
 
 				var oExpComplTime = this.getView().byId("expctedCompltDtId");
-				oExpComplTime.setEditable(false);
-				oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
-
+				if(items[0].Expcted_Complt_Dt == ""){
+					this.getView().byId("labelExpctedCompltDtId").setVisible(false);
+					oExpComplTime.setVisible(false);
+				}
+				else{
+					oExpComplTime.setEditable(false);
+					oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
+				}
+				
 				var oStatus = this.getView().byId("statusId");
 				oStatus.setEnabled(false);
-				oStatus.setValue(items[0].Status);
+				oStatus.setSelectedKey(items[0].Status);
+//				oStatus.setEditable(false);
+//				oStatus.setValue(items[0].Status);
 
 				var oAssignedTo = this.getView().byId("assignedToId");
-				oAssignedTo.setEditable(false);
-				oAssignedTo.setValue(items[0].Assigned_To);
+				oAssignedTo.setEnabled(false);
+				oAssignedTo.setSelectedKey(items[0].Assigned_To);
+//				oAssignedTo.setEditable(false);
+//				oAssignedTo.setValue(items[0].Assigned_To);
 
 				var oAssignedBy = this.getView().byId("assignedById");
-				oAssignedBy.setEditable(false);
-				oAssignedBy.setValue(items[0].Assigned_By);
+				oAssignedBy.setEnabled(false);
+				oAssignedBy.setSelectedKey(items[0].Assigned_By);
+//				oAssignedBy.setEditable(false);
+//				oAssignedBy.setValue(items[0].Assigned_By);
 
 				var oTechnicianNote = this.getView().byId("technicianNoteId");
-				oTechnicianNote.setEditable(false);
-				oTechnicianNote.setValue(items[0].Technician_Note);
-
+				if(items[0].Technician_Note == ""){
+					this.getView().byId("labelTechnicianNoteId").setVisible(false);
+					oTechnicianNote.setVisible(false);
+				}
+				else{
+					oTechnicianNote.setEditable(false);
+					oTechnicianNote.setValue(items[0].Technician_Note);
+				}
 			}	
 		},
 
 		onCloseManagerRead : function(){
-
+			
+			this.getView().byId("labelExpctedCompltDtId").setVisible(true);
+			this.getView().byId("expctedCompltDtId").setVisible(true);
+			this.getView().byId("labelTechnicianNoteId").setVisible(true);
+			this.getView().byId("technicianNoteId").setVisible(true);
+			
 			var oGridTicketDetails = this.getView().byId("gridIdTicketManagRead");
 			oGridTicketDetails.setVisible(false);
 			
@@ -314,6 +398,7 @@ sap.ui.define([
 				var oSave = this.getView().byId("saveBtnManagUpdate");
 				oSave.setText("Update");
 				oSave.setVisible(true);
+				oSave.setEnabled(true);
 
 				var items = contexts.map(function(c){
 					return c.getObject();
@@ -349,25 +434,45 @@ sap.ui.define([
 				oReportOn.setValue(items[0].Reported_On);
 
 				var oExpComplTime = this.getView().byId("expctedCompltDtUpdateId");
-				oExpComplTime.setEditable(false);
-				oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
+				if(items[0].Expcted_Complt_Dt == ""){
+					this.getView().byId("labelExpctedCompltDtUpdateId").setVisible(false);
+					oExpComplTime.setVisible(false);
+				}
+				else{
+					oExpComplTime.setEditable(false);
+					oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
+				}
 
 				var oStatus = this.getView().byId("statusUpdateId");
 				oStatus.setEnabled(false);
 				oStatus.setSelectedKey(items[0].Status);
 
 				var oAssignedTo = this.getView().byId("assignedToUpdateId");
-				oAssignedTo.setEditable(false);
-				oAssignedTo.setValue(items[0].Assigned_To);
+				oAssignedTo.setEnabled(false);
+				oAssignedTo.setSelectedKey(items[0].Assigned_To);
 
 				var oAssignedBy = this.getView().byId("assignedByUpdateId");
-				oAssignedBy.setEditable(false);
-				oAssignedBy.setValue(items[0].Assigned_By);
+				oAssignedBy.setEnabled(false);
+				oAssignedBy.setSelectedKey(items[0].Assigned_By);
 
 				var oTechnicianNote = this.getView().byId("technicianNoteUpdateId");
-				oTechnicianNote.setEditable(false);
-				oTechnicianNote.setValue(items[0].Technician_Note);
+				if(items[0].Technician_Note == ""){
+					this.getView().byId("labelTechnicianNoteUpdateId").setVisible(false);
+					oTechnicianNote.setVisible(false);
+				}
+				else{
+					oTechnicianNote.setEditable(false);
+					oTechnicianNote.setValue(items[0].Technician_Note);
+				}
 
+				
+				if(items[0].Status == 3){
+					oPersonName.setEditable(false);
+					oIssue.setEditable(false);
+					oPriority.setEnabled(false);
+					oSave.setEnabled(false);					
+				}
+				
 			}	
 		},
 
@@ -383,12 +488,12 @@ sap.ui.define([
 					Person_Name : view.byId("personNameUpdateId").getValue().toUpperCase(),
 					Issue : view.byId("issueUpdateId").getValue(),
 					Machine_Id : parseInt(view.byId("machineUpdateId").getSelectedKey()),
-					Priority : view.byId("priorityUpdateId").getSelectedItem().getText(),
+					Priority : view.byId("priorityUpdateId").getSelectedKey(),
 					Reported_On : view.byId("reportedOnUpdateId").getValue(),
 					Expcted_Complt_Dt : view.byId("expctedCompltDtUpdateId").getValue(),
-					Status : view.byId("statusUpdateId").getSelectedItem().getText(),
-					Assigned_To : view.byId("assignedToUpdateId").getValue().toUpperCase(),
-					Assigned_By : view.byId("assignedByUpdateId").getValue().toUpperCase(),
+					Status : view.byId("statusUpdateId").getSelectedKey(),
+					Assigned_To : view.byId("assignedToUpdateId").getSelectedKey(),
+					Assigned_By : view.byId("assignedByUpdateId").getSelectedKey(),
 					Technician_Note : view.byId("technicianNoteUpdateId").getValue(),
 			};
 
@@ -402,6 +507,11 @@ sap.ui.define([
 						sap.m.MessageToast.show("Error during updating data!")
 					}
 				});	
+
+				this.getView().byId("labelExpctedCompltDtUpdateId").setVisible(true);
+				this.getView().byId("expctedCompltDtUpdateId").setVisible(true);
+				this.getView().byId("labelTechnicianNoteUpdateId").setVisible(true);
+				this.getView().byId("technicianNoteUpdateId").setVisible(true);
 
 				var oGrid = view.byId("gridIdTicketManagUpdate");
 				oGrid.setVisible(false);
@@ -433,6 +543,11 @@ sap.ui.define([
 
 		onCloseManagerUpdate : function(){
 
+			this.getView().byId("labelExpctedCompltDtUpdateId").setVisible(true);
+			this.getView().byId("expctedCompltDtUpdateId").setVisible(true);
+			this.getView().byId("labelTechnicianNoteUpdateId").setVisible(true);
+			this.getView().byId("technicianNoteUpdateId").setVisible(true);
+			
 			var oGridTicketUpdate = this.getView().byId("gridIdTicketManagUpdate");
 			oGridTicketUpdate.setVisible(false);
 			
@@ -491,6 +606,7 @@ sap.ui.define([
 				var oSave = this.getView().byId("saveBtnManagChangeMT");
 				oSave.setText("Change Machine / Technician");
 				oSave.setVisible(true);
+				oSave.setEnabled(true);
 
 				var items = contexts.map(function(c){
 					return c.getObject();
@@ -532,8 +648,9 @@ sap.ui.define([
 				oStatus.setSelectedKey(items[0].Status);
 */
 				var oAssignedTo = this.getView().byId("assignedToChangeMTId");
-				oAssignedTo.setEditable(true);
-				oAssignedTo.setValue(items[0].Assigned_To);
+				oAssignedTo.setEnabled(true);
+//				oAssignedTo.setEditable(true);
+//				oAssignedTo.setValue(items[0].Assigned_To);
 				this.oldTechnician = items[0].Assigned_To;
 /*
 				var oAssignedBy = this.getView().byId("assignedByChangeMTId");
@@ -544,9 +661,92 @@ sap.ui.define([
 				oTechnicianNote.setEditable(false);
 				oTechnicianNote.setValue(items[0].Technician_Note);
 */
+				if(items[0].Status== 3){
+					oAssignedTo.setSelectedKey(items[0].Assigned_To);
+					oAssignedTo.setEnabled(false);
+					oMachineId.setEnabled(false);
+					oSave.setEnabled(false);
+				}
+				else{
+					var view = this.getView();
+					view.getModel();
+					
+					var mac_cat = "";
+	
+					var selectedkey = items[0].Machine_Id;
+					
+					console.log(selectedkey);
+					const baseUrl = 'http://i67lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/';
+					const dynamParams = 'MachineSet('+selectedkey+')/Mac_Cat/$value';
+					
+					jQuery.ajax({
+						url: baseUrl+dynamParams,
+						method: 'GET',
+	//					data: {username: "COPS_USER", password: "init123"},
+	//					dataType: 'json',
+						success: function(data) {
+							mac_cat = data;
+							if(mac_cat != ""){
+
+								var _FilterOnAssignedTo = null;
+								_FilterOnAssignedTo = new sap.ui.model.Filter([
+								new sap.ui.model.Filter("Role", sap.ui.model.FilterOperator.EQ, "T"),
+								new sap.ui.model.Filter("Expertise_Type", sap.ui.model.FilterOperator.EQ, ""+mac_cat)
+								], true);
+	
+								oAssignedTo.getBinding("items").filter(_FilterOnAssignedTo, "Application");
+								oAssignedTo.setSelectedKey(items[0].Assigned_To);
+							}
+						},
+						error: function(err) {alert('Error in json call ', err);}
+					});	
+	
+				}
+				
 			}	
 		},
 
+		onSelectMachineChangeMT: function(oEvent){
+
+			var view = this.getView();
+			view.getModel();
+
+			var mac_cat = "";
+
+			
+			var machineSelect = view.byId("machineChangeMTId");
+			var selectedkey = machineSelect.getSelectedKey();
+
+//			console.log(selectedkey);
+			const baseUrl = 'http://i67lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/';
+			const dynamParams = 'MachineSet('+selectedkey+')/Mac_Cat/$value';
+			
+			jQuery.ajax({
+				url: baseUrl+dynamParams,
+				method: 'GET',
+//				data: {username: "COPS_USER", password: "init123"},
+//				dataType: 'json',
+				success: function(data) {
+					mac_cat = data;
+					if(mac_cat != ""){
+						var oAssignedTo = view.byId("assignedToChangeMTId");
+						oAssignedTo.setEnabled(true);
+
+						var _FilterOnAssignedTo = null;
+						_FilterOnAssignedTo = new sap.ui.model.Filter([
+						new sap.ui.model.Filter("Role", sap.ui.model.FilterOperator.EQ, "T"),
+						new sap.ui.model.Filter("Expertise_Type", sap.ui.model.FilterOperator.EQ, ""+mac_cat)
+						], true);
+
+						oAssignedTo.getBinding("items").filter(_FilterOnAssignedTo, "Application");
+						oAssignedTo.setSelectedKey("");
+					}
+				},
+				error: function(err) {alert('Error in json call ', err);}
+			});	
+		},
+
+		
 		onSaveManagerChangeMT: function(){		
 
 			var serviceURL = "/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/";
@@ -559,11 +759,11 @@ sap.ui.define([
 					Person_Name : view.byId("personNameChangeMTId").getValue().toUpperCase(),
 					Issue : view.byId("issueChangeMTId").getValue(),
 					Machine_Id : parseInt(view.byId("machineChangeMTId").getSelectedKey()),
-					Priority : view.byId("priorityChangeMTId").getSelectedItem().getText(),
+					Priority : view.byId("priorityChangeMTId").getSelectedKey(),
 					Reported_On : view.byId("reportedOnChangeMTId").getValue(),
 					Expcted_Complt_Dt : "",
 					Status : "0",
-					Assigned_To : view.byId("assignedToChangeMTId").getValue().toUpperCase(),
+					Assigned_To : view.byId("assignedToChangeMTId").getSelectedKey(),
 					Assigned_By : this.currentManagerName.toUpperCase(),
 					Technician_Note : "",
 			};
@@ -702,8 +902,16 @@ sap.ui.define([
 				oReportOn.setValue(items[0].Reported_On);
 
 				var oExpComplTime = this.getView().byId("expctedCompltDtChangeId");
-				oExpComplTime.setEditable(false);
-				oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
+				if(items[0].Expcted_Complt_Dt == ""){
+					this.getView().byId("labelExpctedCompltDtChangeId").setVisible(false);
+					oExpComplTime.setVisible(false);
+				}
+				else{
+					oExpComplTime.setEditable(false);
+					oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
+				}
+//				oExpComplTime.setEditable(false);
+//				oExpComplTime.setValue(items[0].Expcted_Complt_Dt);
 
 				var oStatus = this.getView().byId("statusChangeId");
 				oStatus.setSelectedKey(items[0].Status);
@@ -718,16 +926,24 @@ sap.ui.define([
 				}					
 
 				var oAssignedTo = this.getView().byId("assignedToChangeId");
-				oAssignedTo.setEditable(false);
-				oAssignedTo.setValue(items[0].Assigned_To);
+				oAssignedTo.setEnabled(false);
+				oAssignedTo.setSelectedKey(items[0].Assigned_To);
 
 				var oAssignedBy = this.getView().byId("assignedByChangeId");
-				oAssignedBy.setEditable(false);
-				oAssignedBy.setValue(items[0].Assigned_By);
+				oAssignedBy.setEnabled(false);
+				oAssignedBy.setSelectedKey(items[0].Assigned_By);
 
 				var oTechnicianNote = this.getView().byId("technicianNoteChangeId");
-				oTechnicianNote.setEditable(false);
-				oTechnicianNote.setValue(items[0].Technician_Note);
+				if(items[0].Technician_Note == ""){
+					this.getView().byId("labelTechnicianNoteChangeId").setVisible(false);
+					oTechnicianNote.setVisible(false);
+				}
+				else{
+					oTechnicianNote.setEditable(false);
+					oTechnicianNote.setValue(items[0].Technician_Note);
+				}
+//				oTechnicianNote.setEditable(false);
+//				oTechnicianNote.setValue(items[0].Technician_Note);
 
 			}	
 		},
@@ -744,12 +960,12 @@ sap.ui.define([
 					Person_Name : view.byId("personNameChangeId").getValue().toUpperCase(),
 					Issue : view.byId("issueChangeId").getValue(),
 					Machine_Id : parseInt(view.byId("machineChangeId").getSelectedKey()),
-					Priority : view.byId("priorityChangeId").getSelectedItem().getText(),
+					Priority : view.byId("priorityChangeId").getSelectedKey(),
 					Reported_On : view.byId("reportedOnChangeId").getValue(),
 					Expcted_Complt_Dt : view.byId("expctedCompltDtChangeId").getValue(),
-					Status : view.byId("statusChangeId").getSelectedItem().getText(),
-					Assigned_To : view.byId("assignedToChangeId").getValue().toUpperCase(),
-					Assigned_By : view.byId("assignedByChangeId").getValue().toUpperCase(),
+					Status : view.byId("statusChangeId").getSelectedKey(),
+					Assigned_To : view.byId("assignedToChangeId").getSelectedKey(),
+					Assigned_By : view.byId("assignedByChangeId").getSelectedKey(),
 					Technician_Note : view.byId("technicianNoteChangeId").getValue(),
 			};
 
@@ -770,6 +986,11 @@ sap.ui.define([
 						sap.m.MessageToast.show("Error during updating status!")
 					}
 				});	
+				
+				this.getView().byId("labelExpctedCompltDtChangeId").setVisible(true);
+				this.getView().byId("expctedCompltDtChangeId").setVisible(true);
+				this.getView().byId("labelTechnicianNoteChangeId").setVisible(true);
+				this.getView().byId("technicianNoteChangeId").setVisible(true);
 				
 				var oGrid = view.byId("gridIdTicketManagChange");
 				oGrid.setVisible(false);
@@ -803,6 +1024,11 @@ sap.ui.define([
 
 		onCloseManagerChange : function(){
 
+			this.getView().byId("labelExpctedCompltDtChangeId").setVisible(true);
+			this.getView().byId("expctedCompltDtChangeId").setVisible(true);
+			this.getView().byId("labelTechnicianNoteChangeId").setVisible(true);
+			this.getView().byId("technicianNoteChangeId").setVisible(true);
+			
 			var oGridTicketChange = this.getView().byId("gridIdTicketManagChange");
 			oGridTicketChange.setVisible(false);
 

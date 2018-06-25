@@ -16,7 +16,7 @@ sap.ui.controller("zss18_t2_app.dashboard_manager", {
 	var oDataset = new sap.viz.ui5.data.FlattenedDataset({
 		measures : [{
 		        name : 'Status',
-		        value : "Status"}],
+		        value : "$count"}],
 		
 		dimensions : [{
 			        name : 'Priority',
