@@ -1,14 +1,23 @@
+
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.m"  controllerName="zss18_t2_app.dashboard_manager"
-        xmlns:viz="sap.viz.ui5.controls"
-	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Pie Chart">
-		<content>
-		<FlexBox justifyContent="Center" alignItems="Start">				
-		  <items>
-			<viz:VizFrame xmlns="sap.viz" id="idpiechart" vizType="pie"/>			
-		 </items> 
-		</FlexBox>
-		</content>
+	xmlns="sap.m" controllerName="zss18_t2_app.dashboard_manager" xmlns:l="sap.ui.layout"
+	xmlns:viz="sap.viz.ui5.controls" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Dashboard - Manager">
+			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdExpertiseCount">
+				<l:content>
+					<viz:VizFrame xmlns="sap.viz" id="idcolumn">
+					</viz:VizFrame>
+
+					<viz:VizFrame xmlns="sap.viz" id="iddash2">
+					</viz:VizFrame>
+					
+					<viz:VizFrame xmlns="sap.viz" id="iddash3">
+					</viz:VizFrame>
+					
+					<viz:VizFrame xmlns="sap.viz" id="iddash4">
+					</viz:VizFrame>
+
+				</l:content>
+			</l:Grid>
 	</Page>
 </core:View>
