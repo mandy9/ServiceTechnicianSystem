@@ -97,7 +97,6 @@
 				</Table>
 			</ScrollContainer>
 			<Toolbar>
-
 				<Button text="Create" type="Accept" press="onCreateTicketManag"
 					id="idCreateTicketManag" />
 				<Button text="Read" type="Accept" press="onReadTicketManag"
