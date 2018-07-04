@@ -6,7 +6,9 @@
 		<content>
 			<Toolbar>
 				<Title id="title" text=""></Title>
-
+				<ToggleButton icon="sap-icon://bbyd-dashboard" id='goToDashboard'
+					tooltip="Go To Dashboard" press="toggleGoToDashboard"
+					pressed="{ui>/goToDashboard}" />
 				<ToolbarSpacer />
 				<ToggleButton icon="sap-icon://sort-ascending" id='sortasc'
 					tooltip="Sort by priority ASC" press="toggleSortPriorityASC"
@@ -127,7 +129,8 @@
 							<Label text="Issue" />
 							<Input id="issueCreateId" />
 							<Label text="Machine ID" />
-							<Select id="machineCreateId" change="onSelectMachineCreate" maxWidth="300rem" items="{/MachineSet}">
+							<Select id="machineCreateId" change="onSelectMachineCreate"
+								maxWidth="300rem" items="{/MachineSet}">
 								<core:ListItem key="{Id}" text="{Machine_Name}" />
 							</Select>
 							<Label text="Priority" />
@@ -179,13 +182,13 @@
 									<core:Item text="High" key="2" />
 								</items>
 							</Select>
-<!-- 							<Input value="{Priority}" id="priorityId" maxLength="1" />     
-							<Input value="{Status}" id="statusId" maxLength="1" />
--->
+							<!-- <Input value="{Priority}" id="priorityId" maxLength="1" /> <Input 
+								value="{Status}" id="statusId" maxLength="1" /> -->
 							<Label text="Reported On" />
 							<Input value="{Reported_On}" id="reportedOnId" maxLength="20" />
 							<Label text="Expected Completion Time" id="labelExpctedCompltDtId" />
-							<Input value="{Expcted_Complt_Dt}" id="expctedCompltDtId" maxLength="20" />
+							<Input value="{Expcted_Complt_Dt}" id="expctedCompltDtId"
+								maxLength="20" />
 							<Label text="Status" />
 							<Select id="statusId" selectedKey="{Status}">
 								<items>
@@ -199,16 +202,14 @@
 							<Select id="assignedToId" maxWidth="300rem" items="{/UserSet}">
 								<core:Item key="{Id}" text="{Name}" />
 							</Select>
-							
+
 							<Label text="Assigned By" />
 							<Select id="assignedById" maxWidth="300rem" items="{/UserSet}">
 								<core:Item key="{Id}" text="{Name}" />
 							</Select>
-							
-<!-- 							
-							<Input value="{Assigned_To}" id="assignedToId" maxLength="12" />
-							<Input value="{Assigned_By}" id="assignedById" maxLength="12" />
- -->							
+
+							<!-- <Input value="{Assigned_To}" id="assignedToId" maxLength="12" 
+								/> <Input value="{Assigned_By}" id="assignedById" maxLength="12" /> -->
 							<Label text="Technician Note" id="labelTechnicianNoteId" />
 							<Input value="{Technician_Note}" id="technicianNoteId" />
 
@@ -267,19 +268,16 @@
 								</items>
 							</Select>
 
-<!-- 							<Input value="{Status}" id="statusUpdateId" maxLength="1" />   
-							<Label text="Assigned To" />
-							<Input value="{Assigned_To}" id="assignedToUpdateId"
-								maxLength="12" />
-							<Label text="Assigned By" />
-							<Input value="{Assigned_By}" id="assignedByUpdateId"
-								maxLength="12" /> -->
+							<!-- <Input value="{Status}" id="statusUpdateId" maxLength="1" /> 
+								<Label text="Assigned To" /> <Input value="{Assigned_To}" id="assignedToUpdateId" 
+								maxLength="12" /> <Label text="Assigned By" /> <Input value="{Assigned_By}" 
+								id="assignedByUpdateId" maxLength="12" /> -->
 
 							<Label text="Assigned To" />
 							<Select id="assignedToUpdateId" maxWidth="300rem" items="{/UserSet}">
 								<core:Item key="{Id}" text="{Name}" />
 							</Select>
-							
+
 							<Label text="Assigned By" />
 							<Select id="assignedByUpdateId" maxWidth="300rem" items="{/UserSet}">
 								<core:Item key="{Id}" text="{Name}" />
@@ -318,7 +316,8 @@
 							<Label text="Issue" />
 							<Input value="{Issue}" id="issueChangeMTId" />
 							<Label text="Machine ID" />
-							<Select id="machineChangeMTId" change="onSelectMachineChangeMT" maxWidth="300rem" items="{/MachineSet}">
+							<Select id="machineChangeMTId" change="onSelectMachineChangeMT"
+								maxWidth="300rem" items="{/MachineSet}">
 								<core:Item key="{Id}" text="{Machine_Name}" />
 							</Select>
 							<!-- <Input value="{Machine_Id}" id="machineChangeMTId" maxLength="3" 
@@ -336,26 +335,19 @@
 							<Label text="Reported On" />
 							<Input value="{Reported_On}" id="reportedOnChangeMTId"
 								maxLength="20" />
-				<!-- 		<Label text="Expected Completion Time" /> <Input value="{Expcted_Complt_Dt}" 
+							<!-- <Label text="Expected Completion Time" /> <Input value="{Expcted_Complt_Dt}" 
 								id="expctedCompltDtChangeMTId" maxLength="20" placeholder="DD/MM/YYYY" /> 
-							<Label text="Status" />
-							<Select id="statusChangeMTId" selectedKey="{Status}">
-								<items>
-									<core:Item text="New" key="0" />
-									<core:Item text="In Progress" key="1" />
-									<core:Item text="Done" key="2" />
-									<core:Item text="Closed" key="3" />
-								</items>
-							</Select>
-				-->
+								<Label text="Status" /> <Select id="statusChangeMTId" selectedKey="{Status}"> 
+								<items> <core:Item text="New" key="0" /> <core:Item text="In Progress" key="1" 
+								/> <core:Item text="Done" key="2" /> <core:Item text="Closed" key="3" /> 
+								</items> </Select> -->
 							<Label text="Assigned To" />
 							<Select id="assignedToChangeMTId" maxWidth="300rem" items="{/UserSet}">
 								<core:Item key="{Id}" text="{Name}" />
 							</Select>
 
-						<!--	<Input value="{Assigned_To}" id="assignedToChangeMTId"
-								maxLength="12" />
-							<Label text="Assigned By" /> <Input value="{Assigned_By}" id="assignedByChangeMTId" 
+							<!-- <Input value="{Assigned_To}" id="assignedToChangeMTId" maxLength="12" 
+								/> <Label text="Assigned By" /> <Input value="{Assigned_By}" id="assignedByChangeMTId" 
 								maxLength="12" /> <Label text="Technician Note" /> <Input value="{Technician_Note}" 
 								id="technicianNoteChangeMTId" /> -->
 							<Label text="" />
@@ -426,7 +418,7 @@
 								<core:Item key="{Id}" text="{Name}" />
 							</Select>
 
-							<Label text="Technician Note"  id="labelTechnicianNoteChangeId"/>
+							<Label text="Technician Note" id="labelTechnicianNoteChangeId" />
 							<Input value="{Technician_Note}" id="technicianNoteChangeId" />
 							<Label text="" />
 							<Button text="Change Status" type="Accept" press="onSaveManagerChange"

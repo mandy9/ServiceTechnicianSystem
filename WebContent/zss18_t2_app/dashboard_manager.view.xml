@@ -2,22 +2,50 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.m" controllerName="zss18_t2_app.dashboard_manager" xmlns:l="sap.ui.layout"
 	xmlns:viz="sap.viz.ui5.controls" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Dashboard - Manager">
-			<l:Grid defaultSpan="L12 M12 S12" width="auto" id="gridIdExpertiseCount">
-				<l:content>
-					<viz:VizFrame xmlns="sap.viz" id="idcolumn">
-					</viz:VizFrame>
+	<Page title="Manager Dashboard" background-color='White'>
+		<VBox height="150px" width="480px"></VBox>
 
-					<viz:VizFrame xmlns="sap.viz" id="iddash2">
-					</viz:VizFrame>
-					
-					<viz:VizFrame xmlns="sap.viz" id="iddash3">
-					</viz:VizFrame>
-					
-					<viz:VizFrame xmlns="sap.viz" id="iddash4">
-					</viz:VizFrame>
 
-				</l:content>
-			</l:Grid>
+		<l:Grid defaultSpan="L12 M12 S12" id="gridPage">
+			<l:content>
+
+				<l:Grid defaultSpan="L12 M12 S12" width="100%"
+					id="gridIdExpertiseCount">
+					<l:content>
+						<FlexBox alignItems='Center'>
+							<l:Grid defaultSpan="L12 M12 S12" width="100%" id="gridFistDash">
+								<l:content>
+									<viz:VizFrame xmlns="sap.viz" id="idcolumn"
+										height="400px" width="480px">
+									</viz:VizFrame>
+								</l:content>
+							</l:Grid>
+							<l:Grid defaultSpan="L12 M12 S12" width="100%" id="gridDash3">
+								<l:content>
+									<viz:VizFrame xmlns="sap.viz" id="iddash3" height="400px"
+										width="480px">
+									</viz:VizFrame>
+								</l:content>
+							</l:Grid>
+							<l:Grid defaultSpan="L12 M12 S12" width="100%" id="gridDash4">
+								<l:content>
+									<viz:VizFrame xmlns="sap.viz" id="iddash4"
+										uiConfig="{ 'applicationSet': 'fiori' }" vizType='pie' height="400px"
+										width="480px">
+									</viz:VizFrame>
+								</l:content>
+							</l:Grid>
+						</FlexBox>
+					</l:content>
+				</l:Grid>
+			</l:content>
+		</l:Grid>
+		<Toolbar>
+			<ToolbarSpacer />
+			<ToggleButton icon="sap-icon://manager-insight" id='insight'
+				tooltip="Go to Service Tickets Insight" press="toggleServiceNavigation"
+				pressed="{ui>/goToServiceTickets}" height='100px' width='100px' />
+		</Toolbar>
+
 	</Page>
 </core:View>

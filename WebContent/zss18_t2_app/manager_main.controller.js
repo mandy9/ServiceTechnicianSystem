@@ -1252,6 +1252,24 @@ sap.ui.define([
 				var oSorter = new sap.ui.model.Sorter("Priority", true);
 				this.byId("service_tickets_manager_id").getBinding("items").sort(oSorter);
 			},
+			
+			navigate : function() {
+				var app = new sap.m.App({
+					initialPage : this.createId("iddashboard_main1")
+				});
+				var page = sap.ui.view({
+					id : this.createId("iddashboard_main1"),
+					viewName : "zss18_t2_app.dashboard_manager",
+					type : sap.ui.core.mvc.ViewType.XML
+				});
+				app.addPage(page);
+				app.placeAt("content", "only");
+			},
+			
+			toggleGoToDashboard: function(oEvent){
+				this.navigate()
+				
+			},
 
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's
