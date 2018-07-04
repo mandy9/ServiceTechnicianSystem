@@ -187,6 +187,7 @@ sap.ui.define([
 	
 	
 	parseJsonModel: function() {
+		var subArray=['New','In Progress','Done','Closed'];
 		var parsed_json_result="";
 		var serviceURL = '/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/TicketQuantityByStatus?$select=Status,Id';
 		jQuery.ajax({
@@ -200,25 +201,27 @@ sap.ui.define([
 
 				for (var i = 0; i < parsed_json.d.results.length; i++) {
 					var status = parsed_json.d.results[i];
-					if (status.Status == '0')
+					status.Status = subArray[parseInt(status.Status)];					
+/*					if (status.Status == '0')
 						status.Status = 'New'
 						else if (status.Status == '1')
 							status.Status = 'In Progress'
 								else if (status.Status == '2')
 									status.Status = 'Done'
 										else 
-											status.Status = 'Closed'
+											status.Status = 'Closed' */
 				}
 				//console.log(parsed_json)
 				parsed_json_result = parsed_json;
 			}
 		
-	});
+		});
 		return parsed_json_result;
 	},
 	
 	
 	parseJsonModelForMacCat: function() {
+		var subArray=['Robot','Welding Machine','Koffee Machine'];
 		var parsed_json_result="";
 		var serviceURL = '/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/MachineQuantityByMachineCategory?$select=Mac_Cat,Id';
 		jQuery.ajax({
@@ -232,22 +235,24 @@ sap.ui.define([
 
 				for (var i = 0; i < parsed_json.d.results.length; i++) {
 					var category = parsed_json.d.results[i];
-					if (category.Mac_Cat == '0')
+					category.Mac_Cat = subArray[parseInt(category.Mac_Cat)];					
+/*					if (category.Mac_Cat == '0')
 						category.Mac_Cat = 'Robot'
 						else if (category.Mac_Cat == '1')
 							category.Mac_Cat = 'Welding Machine'
 								else if (category.Mac_Cat == '2')
-									category.Mac_Cat = 'Koffee Machine'
+									category.Mac_Cat = 'Koffee Machine' */
 				}
 				//console.log(parsed_json)
 				parsed_json_result = parsed_json;
 			}
 		
-	});
+		});
 		return parsed_json_result;
 	},
 	
 	parseJsonModelForTechnicianExpertise: function() {
+		var subArray=['Robot','Welding Machine','Koffee Machine'];
 		var parsed_json_result="";
 		var serviceURL = '/sap/opu/odata/sap/ZSS18_T2_TICKET_SRV/TechnicianQuantityByMachineCategory?$select=Expertise_Type,Id';
 		jQuery.ajax({
@@ -261,18 +266,20 @@ sap.ui.define([
 
 				for (var i = 0; i < parsed_json.d.results.length; i++) {
 					var expertise = parsed_json.d.results[i];
-					if (expertise.Expertise_Type == '0')
+					expertise.Expertise_Type = subArray[parseInt(expertise.Expertise_Type)];
+/*					if (expertise.Expertise_Type == '0')
 						expertise.Expertise_Type = 'Robot'
 						else if (expertise.Expertise_Type == '1')
 							expertise.Expertise_Type = 'Welding Machine'
 								else if (expertise.Expertise_Type == '2')
-									expertise.Expertise_Type = 'Koffee Machine'
+									expertise.Expertise_Type = 'Koffee Machine' */
 				}
 				//console.log(parsed_json)
+				
 				parsed_json_result = parsed_json;
 			}
 		
-	});
+		});
 		return parsed_json_result;
 	}
 /**
