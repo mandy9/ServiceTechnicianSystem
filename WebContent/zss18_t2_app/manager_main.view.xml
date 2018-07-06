@@ -6,10 +6,10 @@
 		<content>
 			<Toolbar>
 				<Title id="title" text=""></Title>
+				<ToolbarSpacer />
 				<ToggleButton icon="sap-icon://bbyd-dashboard" id='goToDashboard'
 					tooltip="Go To Dashboard" press="toggleGoToDashboard"
 					pressed="{ui>/goToDashboard}" />
-				<ToolbarSpacer />
 				<ToggleButton icon="sap-icon://sort-ascending" id='sortasc'
 					tooltip="Sort by priority ASC" press="toggleSortPriorityASC"
 					pressed="{ui>/sortPriorityASCOn}" />
