@@ -33,7 +33,7 @@ sap.ui.define([
 
 		},
 		
-		currentManagerName: "ABAP-09",		/* Manager ID:- Have to change it with the name of logged in manager*/
+		currentManagerName: "DEV-337",		/* Manager ID:- Have to change it with the name of logged in manager*/
 
 		onCreateTicketManag : function(){
 			this.byId("ManagerPage").scrollTo(300,10);
