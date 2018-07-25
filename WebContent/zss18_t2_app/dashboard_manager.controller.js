@@ -5,7 +5,7 @@ sap.ui.define([
 	"use strict";
 
 
-	return Controller.extend("zss18_t2_app.dashboard_manager", {
+	return Controller.extend("ZSS18_T2_APP.zss18_t2_app.dashboard_manager", {
 
 /**
 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -173,7 +173,7 @@ sap.ui.define([
 		});
 		var page = sap.ui.view({
 			id : this.createId("idmanager_main1"),
-			viewName : "zss18_t2_app.manager_main",
+			viewName : "ZSS18_T2_APP.zss18_t2_app.manager_main",
 			type : sap.ui.core.mvc.ViewType.XML
 		});
 		app.addPage(page);

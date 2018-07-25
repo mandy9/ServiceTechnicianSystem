@@ -1,6 +1,6 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form"
-	controllerName="zss18_t2_app.manager_main" xmlns:html="http://www.w3.org/1999/xhtml"
+	controllerName="ZSS18_T2_APP.zss18_t2_app.manager_main" xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:t="sap.ui.table">
 	<Page title="Manager View" enableScrolling="true" id="ManagerPage">
 		<content>
