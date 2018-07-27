@@ -181,7 +181,8 @@ sap.ui.define([
 	},
 	
 	toggleServiceNavigation: function(oEvent){
-		this.navigate()
+		//this.navigate()
+		sap.ui.getCore().byId("myApp").to("idmanager_main1");
 		
 	},
 	

@@ -1267,7 +1267,8 @@ sap.ui.define([
 			},
 			
 			toggleGoToDashboard: function(oEvent){
-				this.navigate()
+				//this.navigate()
+				sap.ui.getCore().byId("myApp").to("iddashboard_main1");
 				
 			},
 

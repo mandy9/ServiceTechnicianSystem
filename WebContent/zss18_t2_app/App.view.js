@@ -17,7 +17,8 @@ sap.ui.jsview("ZSS18_T2_APP.zss18_t2_app.App", {
 		var page1 = sap.ui.view({id:"iddashboard_main1", viewName:"ZSS18_T2_APP.zss18_t2_app.dashboard_manager", type:sap.ui.core.mvc.ViewType.XML});
 		page1.getController().nav = this.getController();
 		this.app.addPage(page1);
-		
+		var page2 = sap.ui.view({id:"idmanager_main1", viewName:"ZSS18_T2_APP.zss18_t2_app.manager_main", type:sap.ui.core.mvc.ViewType.XML});
+		this.app.addPage(page2);
 		//return app
 		return this.app;
 	}
