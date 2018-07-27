@@ -12,26 +12,26 @@
 				<l:Grid defaultSpan="L12 M12 S12" width="100%"
 					id="gridIdExpertiseCount">
 					<l:content>
-						<FlexBox alignItems='Center'>
+						<FlexBox alignItems='Center' justifyContent="Center">
 							<l:Grid defaultSpan="L12 M12 S12" width="100%" id="gridFistDash">
 								<l:content>
 									<viz:VizFrame xmlns="sap.viz" id="idcolumn"
-										height="400px" width="480px">
+										height="320px" width="384px">
 									</viz:VizFrame>
 								</l:content>
 							</l:Grid>
 							<l:Grid defaultSpan="L12 M12 S12" width="100%" id="gridDash3">
 								<l:content>
-									<viz:VizFrame xmlns="sap.viz" id="iddash3" height="400px"
-										width="480px">
+									<viz:VizFrame xmlns="sap.viz" id="iddash3" height="320px"
+										width="384px">
 									</viz:VizFrame>
 								</l:content>
 							</l:Grid>
 							<l:Grid defaultSpan="L12 M12 S12" width="100%" id="gridDash4">
 								<l:content>
 									<viz:VizFrame xmlns="sap.viz" id="iddash4"
-										uiConfig="{ 'applicationSet': 'fiori' }" vizType='pie' height="400px"
-										width="480px">
+										uiConfig="{ 'applicationSet': 'fiori' }" vizType='pie' height="320px"
+										width="384px">
 									</viz:VizFrame>
 								</l:content>
 							</l:Grid>
